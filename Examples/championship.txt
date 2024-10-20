@@ -1,0 +1,126 @@
+*****************************************************************************************
+COPY THE CONTENTS OF THIS FILE INTO THE DUNO BOX AND EXECUTE THE BLOCK.
+OR OPEN DUNO AND SELECT THIS FILE IN: File-Run file.
+OR directly run the file with extension.du
+*****************************************************************************************
+    This script allows you to quickly enter the results of a drivers championship.
+    Save data and show ranking. Thanks to the graphic controls it allows you to manage
+    everything with simple clicks.
+*****************************************************************************************
+
+#> the variable drivers is a list (pipe is item separator in DunoCode),
+#> \space\ is an internal variable used here only to improve readability
+
+ drivers =>\space\MAX | LEW | CAR | LAN | FER | OSC | SER | NIC\space\
+
+#>copies the drivers variable into a variable (driv2) that will be consumed in a loop
+
+ driv2 =>\drivers\
+
+#> the first time I create the champ.txt file formatted like this:
+#> drivers| MAX | LEW | CAR | LAN | FER | OSC | SER | NIC 
+#> \user\ is internal const. \E.\ is agnostic path separator
+
+ ifexists >\user\\E.\champ.txt; not
+  filewrite >\user\\E.\champ.txt ; drivers|\drivers\
+ endif>
+
+#> in the 'select' widget I can choose a race (the first element is the header). 
+#> Then I save the selected value in the \gp\ variable
+
+select >Select Race|QAT   |ESP   |ITA   |ENG   |BRA   |USA   |JAP  \space\
+gp =>\selected\
+
+#>Initialize the gp results row to zero (a list, again), set points list and an iterator
+
+row =>0  |0  |0  |0  |0  |0  |0  |0  
+points =>|10|8|6|4|3|2|1|0
+it =>0
+
+#>the following loop (nextval>... next> ) goes from \it\ to 8 (which is the number of drivers in points), step 1
+#>nextval adds the step value at each itaration (first time \it\= 1 not 0)
+
+nextval >\it\ ; 1 ; 8
+
+#>We allow to choose the drivers from the first to the eighth position in the GP with qs (quickSelect), to put 
+#>the points in \row\(the first element of qs is the header).
+#>After each choice I get the index of the selected item in the \drivers\ variable
+
+ qs >Position \it\|\driv2\
+ j = listindex >\drivers\;\selected\
+
+ #>I modify the variable \row\, at index \j\ with the value of \points\ at index \it\
+ #> [-- --] are used to nest functions.
+
+ row = listedit >\row\;\j\;[--listAt>\points\;\it\--]
+
+ #>I get the index of the selected item in the \driv2\ var. and I remove it from \driv2\ (from \j\ to \j\)
+
+ j = listindex >\driv2\;\selected\
+ driv2 = listremove >\driv2\;\j\;\j\
+next>
+
+#>I fixed each element of \row\ to 5 characters
+
+row =align >\row\;5;1
+
+#> I add a new line, the variable \gp\, a pipe and \row\ to the end of champ.txt
+
+filewrite >\user\\E.\champ.txt;\n.\\gp\|\row\; append
+wait >150
+
+#>calculation of total points for each driver
+#>from file replace new line (\n.\) with |
+
+all = listfrom >\user\\E.\champ.txt;\n.\
+
+#> I reset the \it\ variable, and create a ris variable with an empty value
+it =>0
+ris =>\nothing\
+
+#> the loop (nextval>... next> ) goes from \it\(1) to 8 (which is the number of drivers), step 1
+
+nextval >\it\;1;8
+
+ #> sum every 9 starting from \it\. Each block has 9 elements (gp name + 8 drivers)
+
+ sum = listsum >\all\; 9 ; \it\
+
+ #>I add the pilot at index \it\-1 to the \ris\ variable (\drivers\ starts from 0 
+ #>while \it\ starts from 1). Then I add the sum. The result will be like this: 
+ #>name | points | name | points ...
+
+ ris = >\ris\[--listAt>\drivers\;\it\-1 --]|\sum\|
+next>
+
+#>sorts the drivers-points pair based on the points
+#>reset the \all\ variable, using the \nothing\ variable or an empty string
+
+all =>\nothing\
+
+#>from \ris\ I extract only the points, order them in numerical mode and invert 
+#>the list (from major to minor)
+
+pt = reverse>[--listsort >[--listextract >\ris\;2;1;1 --]; num--];list
+
+#>from this list \pt\, the following loop (nextitem... next) gets the first element.
+#>Remember that nextItem return the first item, them removes it from list.
+
+item = nextitem >\pt\;1
+
+ #> I see what position this score occupies in \ris\ (unordered list with name |points |..)
+
+ j = listindex >\ris\;\item\
+
+ #> I recreate the ordered name-point pair in the variable \all\ and remove the item from \ris\
+
+ all =>\all\[--listAt>\ris\;\j\-1 --] |\item\|
+ ris = listremove >\ris\;\j\;\j\
+next>
+
+#> I launch the previously created file and also the list with the ranking, with 2 elements per line
+
+launch >\user\\E.\champ.txt
+sel_join >Classification|\all\;2
+end >
+#> 37 lines of code
