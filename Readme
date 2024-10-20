@@ -12,3 +12,5 @@ DunoCode is mainly aimed at 'on the fly' execution of scripts, but also:
   to the creation of scripts with a partial graphical interface;
   to those who want to perform operations with a unique, schematic and simple syntax.
   at those who don't like the cryptic commands typical of bash (awk, sed, expr etc...).
+
+https://dunocode.altervista.org
