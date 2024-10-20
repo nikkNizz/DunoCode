@@ -1,0 +1,43 @@
+****************************************************************************************
+COPY THE CONTENTS OF THIS FILE INTO THE DUNO BOX AND EXECUTE THE BLOCK.
+OR OPEN DUNO AND SELECT THIS FILE IN: File-Run file.
+OR directly run the file with extension.du
+*****************************************************************************************
+This script remains in the background waiting for the contents of the clipboard to be 
+modified. Then show options and copy the changed content to the clipboard.
+*****************************************************************************************
+
+window> hide 
+
+#> nextval> ... next> enclose an infinite loop; clipboardEv> stops the execution of the 
+#> script waiting for the contents of the clipboard to change; qs> is Quick Select
+
+nextval>
+  clip= clipboardEv>
+        window     >show
+        qs         >Choose task|Nothing|Calc|Uppercase|Speak|Quit
+        case       >1; calculate ; 2 ; upp ; 3 ; talk ; 4 ; quit
+        wait       >500
+        window     > hide 
+Next >
+
+#> FUNCTIONS
+.calculate>
+  clip = calc >\clip\
+         copy >\clip\
+endfunct>
+
+.upp>
+  clip = ucase >\clip\
+         copy  >\clip\
+endfunct>
+
+.talk>
+  speak >\clip\
+endfunct>
+
+.quit>
+  close>
+endfunct>
+
+end>

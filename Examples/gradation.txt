@@ -1,0 +1,39 @@
+***************************************************************************************
+COPY THE CONTENTS OF THIS FILE INTO THE DUNO BOX AND EXECUTE THE BLOCK.
+OR OPEN DUNO AND SELECT THIS FILE IN: File-Run file.
+OR directly run the file with extension.du
+***************************************************************************************
+This script generates a 400*50 image with gradation color whose initial and final 
+values ​​are decided by the user.
+***************************************************************************************
+
+command>Enter values ​​between 0 and 255; OK
+// likeform allows you to fill in the 'values' section
+init  = Likeform >colors|red|green|blue ;values|0|0|0
+finit = Likeform >colors|red|green|blue ;values|255|255|255
+
+// find steps
+diffR = calc>([--listAt>\finit\;0 --]- [--listAt>\init\;0--]) / 400
+diffG = calc>([--listAt>\finit\;1 --]- [--listAt>\init\;1--]) / 400
+diffB = calc>([--listAt>\finit\;2 --]- [--listAt>\init\;2--]) / 400
+
+// Globals
+res=>\nothing\
+it=>0
+R= listat>\init\;0
+G= listAt>\init\;1
+B= listat>\init\;2
+
+// iteration
+nextval>\it\;1;400 
+  res=>\res\[--decimal>\R\;0--]|[--decimal>\G\;0--]|[--decimal>\B\;0--]|
+  R = calc>\R\+\diffR\
+  G = calc>\G\+\diffG\
+  B = calc>\B\+\diffB\
+next>
+
+res = repeat>\res\\n.\;50
+f= imgfromList>\res\
+wait>500
+launch>\f\
+end>
