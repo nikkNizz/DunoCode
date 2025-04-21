@@ -1,3 +1,4 @@
+Download the interpreter from the **releases** page.  
 DunoCode is a scripting language based on simple sequences of unique directives
 (Duno = Direttiva UNO), mainly adapted to Linux systems.  
 **To write code, just keep the guide with the list of functions at hand.**  
