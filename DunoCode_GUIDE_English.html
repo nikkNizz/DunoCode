@@ -1,0 +1,2725 @@
+<!Doctype html>
+<html>
+
+<head>
+<title>DunoCode Manual </title>
+<link rel="icon" href="https://drive.google.com/uc?export=view&id=1yG1W11r0Rne9MlYlRVy3KV23VO-RmHHh" >
+<meta charset="UTF-8" />
+
+
+<script>
+ // ------- globali ------------------------------------------------------
+   var mostrato = "presentazione";
+   var cronologia =["presentazione"];
+   var indiceCrono = -1;
+   var indiceRicerca=0;
+   
+   var elencoDir=["#", "adddays" , "align" , "ascii" , "audiorec" , "battery" , "break" , "browser" , "calc" , "call" , "canc" , "case" , "chop" , "chr" , "clipboardev" , "close" , "clr" , "col" ,  "command" , "copy" , "count" , "datediff" , "decimal" , "diagon" , "dialog" , "diff" , "draw" , "drive" , "else" ,  "end" , "endfunct" , "endif" , "exit" , "filecopy" , "filedel"  , "fileevent" , "fileinfo" , "fileread" , "filerename" , "filewrite" , "folder" , "fromclipboard" , "funct" , "getlines" , "ifdate" , "ifeq"  , "ifequiv" , "ifexists" , "iffloat", "iffocus" , "ifincluded" , "ifint" , "ifleap" , "ifmaj" , "ifmin" , "ifstring" , "imgfromlist" , "indexof" , "insert" , "keep" , "lastindexof" , "launch" , "lbl" , "lcase" , "len" , "likeform" ,  "listafter" ,  "listat" , "listchop" , "listcompare" ,  "listedit" , "listextract" , "listfilter" , "listfrom" , "listfuse" , "listgroup" , "listindex" , "listinsert" , "listjoin" , "listmatch" ,  "listmax" , "listmid" , "listremitems" , "listremove" , "listsort" , "listsum"  , "listswap" , "listtotable"  , "math" , "mem" , "midstring" , "mod" , "network" , "next" , "nextchars" , "nextitem" , "nextrow" , "nextval" , "no" , "notes" , "notify" , "now" , "numbox" , "ofweek" , "oneof" , "osversion" , "pathup" , "pcname" , "picker" ,  "pixlist" , "playwav" , "pow" , "prg" , "print" , "progress" ,"qs", "random" , "remove" , "repeat" , "replace"  , "replaceline" , "replfirst" , "report" , "reverse" , "right" , "round" , "screenshot" , "screensize" , "sel_every" , "sel_join" , "sel_search" , "select" , "speak" , "sqrt" , "subdir" , "substring" , "text" , "thispath" , "tiletext"  , "time", "tohex" , "toprinter" , "trim" , "ucase" , "wait" , "window" , "word" ,  "xwingeometry"];
+   
+   //-----------------------------------------------------------------------
+   function carica(){
+      alert("File translated with GOOGLE !");
+      var x = document.getElementById("elenco");
+      var option = document.createElement("option");
+         option.text = "Directive list";
+         x.add(option); 
+      for(it=0; it < elencoDir.length; it++){
+         option = document.createElement("option");
+         option.text = elencoDir[it];
+         x.add(option); 
+      }
+   }
+   
+   function cambia(){
+      if(document.getElementById("elenco").selectedIndex > 0){
+         var str = document.getElementById("elenco").value;
+         str = str.replace("_", "");
+         str = str.replace("#", "ash");
+         vai(str);
+         document.getElementById("elenco").selectedIndex=0;
+      }
+   
+   }
+   
+   function vai(ID){
+     spostaCerchio(ID);
+     document.getElementById(mostrato).style.display= "none";
+     togliEvidenziazione();
+     mostrato =ID;
+     document.getElementById(ID).style.display= "inline";
+     indiceCrono++;
+     cronologia.splice(indiceCrono,0,ID);  
+    
+       
+   }
+ 
+  function spostaCerchio(ID){
+    var posC=486;
+     if(ID == "caratteristiche"){posC=1;}
+    else if(ID == "basi"){posC = 29;}
+    else if(ID == "errori"){posC = 57;}
+    else if(ID == "controllo"){posC = 85;}
+    else if(ID == "output"){posC = 113;}
+    else if(ID == "variabilinterne"){posC = 141;}
+    else if(ID == "variabili"){posC = 169;}
+    else if(ID == "liste"){posC = 197;}
+    else if(ID == "condizioni"){posC = 225;}
+    else if(ID == "routine"){posC = 253;}
+    else if(ID == "annidamenti"){posC = 281;}
+    else if(ID == "cicli"){posC = 309;}  
+    else if(ID == "alias"){posC = 337;}
+    else if(ID == "ritroso"){posC = 365;}
+    else if(ID == "codiceesterno"){posC = 393;}
+    else if(ID == "jsbash"){posC = 421;}
+    else if(ID == "grafiche"){posC = 449;}
+    else if(ID == "contatti"){posC = 477;}   
+
+    document.getElementById("cerkio").style.top = posC + "px";
+}
+   
+    function backk_Click(){
+      togliEvidenziazione();
+      indiceCrono--;
+      if(indiceCrono < 0){ indiceCrono =0;}
+      id = cronologia[indiceCrono];
+      document.getElementById(mostrato).style.display= "none";
+      mostrato =id;
+      document.getElementById(id).style.display= "inline";
+      spostaCerchio(id);
+}
+
+    function forww_Click(){
+      togliEvidenziazione();
+      indiceCrono++;
+      if(indiceCrono > cronologia.length-1){ indiceCrono = cronologia.length-1;}
+      id = cronologia[indiceCrono];
+      document.getElementById(mostrato).style.display= "none";
+      mostrato =id;
+      document.getElementById(id).style.display= "inline";
+      spostaCerchio(id);
+}
+
+           
+     function prossimo(n){
+     var i=0;
+     var ce= false;
+     var confr = mostrato.replace("ash", "#");
+     confr = confr.replace("selevery", "sel_every");
+     confr = confr.replace("seljoin", "sel_join");
+     confr = confr.replace("selsearch", "sel_search");
+        for(i =0; i<elencoDir.length; i++){
+           if(elencoDir[i] == confr ){ ce = true; break; }
+        }
+      if(!ce){return;}
+     i+=n;
+     if(i > elencoDir.length-1){ i =0;}
+     if(i < 0){i = elencoDir.length-1;}
+     var elem = elencoDir[i];
+     elem = elem.replace("#", "ash");
+     elem = elem.replace("_", "");
+     vai(elem);     
+     
+     }
+
+function trova(){  
+  var tx = document.getElementById("cerca").value;
+  tx = tx.toLowerCase();
+  if(tx.length < 3){document.getElementById("cerca").value= "Too short"; return;}
+  var preTag = document.getElementsByTagName("PRE");
+  var inner="";
+  togliEvidenziazione();
+  for(var i = indiceRicerca; i < preTag.length; i++){
+     inner = preTag[i].innerHTML;
+     var lowInner = inner.toLowerCase();
+     var dovee = lowInner.indexOf(tx);
+     if(dovee > -1){
+        //trova la parola non lowercase
+        var parolaVera = inner.substring(dovee, dovee+tx.length);
+        // metti tag
+        inner = inner.replace(parolaVera, "<szn>"+ parolaVera + "</szn>");
+        // ricrea pre
+        document.getElementById(preTag[i].id).innerHTML = inner;
+        vai(preTag[i].id);   
+        indiceRicerca = i+1; 
+        if(indiceRicerca >= preTag.length){indiceRicerca =0;}
+        break;
+     }
+     indiceRicerca =0;     
+  }
+}
+
+function trovaFunc(){
+   var tx = document.getElementById("cerca").value;
+   tx = tx.toLowerCase();
+   let p="";
+   let altri="";
+   for(i=0; i< elencoDir.length; i++){
+      if(elencoDir[i].indexOf(tx) > -1){
+         if(p ==""){ p= elencoDir[i];}
+         else{altri +=elencoDir[i] + " "; }
+     
+       }
+}
+   p= p.replace("#", "ash");
+   p= p.replace("_","");
+   if(p != ""){ vai(p); document.getElementById("cerca").value = altri;};
+
+}
+
+function togliEvidenziazione(){
+     document.getElementById(mostrato).innerHTML= document.getElementById(mostrato).innerHTML.replace("<szn>", "");
+     document.getElementById(mostrato).innerHTML= document.getElementById(mostrato).innerHTML.replace("</szn>", "");
+     }
+
+function goSelez(){
+ let a = document.getElementById("cerca").selectionStart;
+ let b = document.getElementById("cerca").selectionEnd;
+ let c = document.getElementById("cerca").value.substring(a,b);
+ c = c.toLowerCase();
+ c= c.replace("#", "ash");
+ c= c.replace("_","");
+ if(elencoDir.indexOf(c) > -1){ vai(c);}
+}
+
+</script>
+
+<style>
+
+body{background-color: #ddfdf0;}
+esempi{color: #AE268B;}
+rosso{color: red; font-style:italic;}
+verde{color:#007800;font-weight:500;}
+vi{color:orange; font-weight:bold; cursor:pointer;}
+szn{background-color:cyan;}
+label{cursor: pointer; color: blue;}
+.viste{position:absolute; top:80px; left:270px; border: solid 1px; background-color: #f0fddd; font-size: 16px;border-radius: 12px;display: none;padding: 3px;}
+#lineaBottoni{position:absolute; top:70px; left:270px;}
+#presentazione{position:absolute; top:85px; left:270px; height: 400px; width: 720px;border: solid 1px;border-radius: 10px; background-color: RGB(0, 0, 0); color: RGB(125, 219, 227); font-family: monospace; font-size:16px; font-weight: bold;padding:8px;}
+#intestazione{position:absolute; top:1px; left: 450px; color:red; font-style:italic;}
+#sommario{position:absolute; top:20px; left: 10px; width: 240px; height: 556px; border: solid 2px;border-radius:10px; border-color:#007400;font-size:17px;background-color:#f0fddd; }
+select{font-size:18px; color:blue;}}
+
+</style>
+
+
+</head>
+
+<body onload="carica()">
+
+<h2 id="intestazione">DunoCode 3.03 (LINUX)</h2>
+
+<div id="sommario">
+
+<label style="position:absolute; top:1px;" onclick="vai('caratteristiche')">Characteristics</label><br><br>
+<label style="position:absolute; top:29px;" onclick="vai('basi')">Basics of language</label><br><br>
+<label style="position:absolute; top:57px;" onclick="vai('errori')">Errors</label><br>
+<label style="position:absolute; top:85px;" onclick="vai('controllo')">Control character</label><br>
+<label style="position:absolute; top:113px;" onclick="vai('output')">Output and dubug</label><br>
+<label style="position:absolute; top:141px;" onclick="vai('variabilinterne')">Internal variabiles</label><br>
+<label style="position:absolute; top:169px;" onclick="vai('variabili')">Variabiles</label><br>
+<label style="position:absolute; top:197px;" onclick="vai('liste')">Lists</label><br>
+<label style="position:absolute; top:225px;" onclick="vai('condizioni')">Conditions</label><br>
+<label style="position:absolute; top:253px;" onclick="vai('routine')">Routine</label><br>
+<label style="position:absolute; top:281px;" onclick="vai('annidamenti')">Nestings</label><br>
+<label style="position:absolute; top:309px;" onclick="vai('cicli')">Loops</label><br>
+<label style="position:absolute; top:337px;" onclick="vai('alias')">Alias</label><br>
+<label style="position:absolute; top:365px;" onclick="vai('ritroso')">Back script</label><br>
+<label style="position:absolute; top:393px;" onclick="vai('codiceesterno')">External code</label><br>
+<label style="position:absolute; top:421px;" onclick="vai('jsbash')">Javascript, Bash</label><br>
+<label style="position:absolute; top:449px;" onclick="vai('grafiche')">Graphics</label><br>
+<label style="position:absolute; top:477px;" onclick="vai('contatti')">How to...</label><br><br>
+&nbsp;&nbsp;<select style="position:absolute; top:515px;" id="elenco" size="0" onchange="cambia()" >Elenco Direttive</select>
+<div id="cerkio" style="position:absolute; top:458px; left:220px; width:16px; height:16px; background-color:#ffff00; border:solid 1px; border-radius:10px;" ></div>
+</div>
+
+<div id= "lineaBottoni">
+<button onclick="backk_Click()" >&lt;</button>
+<button onclick="forww_Click()" >&gt;</button>
+
+<button onclick="prossimo(1)">Next directive</button>
+<button onclick="prossimo(-1)">Previous directive</button>
+<input type="text" id="cerca" placeholder="Find word" ondblClick="goSelez()" >
+<button onClick="trova(0)">Find next</button>
+<button onClick="trovaFunc()">Find directive</button>
+</div>
+
+<pre id="presentazione" >
+tx =Mem    &gt;DunoCode : a scripting language...
+tx =Insert &gt;\tx\ ; 13 ; fantastic 
+Print  &gt;\tx\
+End    &gt;
+
+DunoCode : a fantastic scripting language...<button onclick="vai('caratteristiche')">...</button>
+</pre>
+
+<pre id="caratteristiche" class="viste">
+<b>Characteristics</b>
+DunoCode is a scripting language based on simple sequences of unique directives
+(Duno = Direttiva UNO), mainly adapted to Linux systems.
+In DunoCode everything is an internal function with any parameters, including delimiters
+blocks and variable assignment!
+
+The interpreter is a simple program, written in any language, and is part
+integral to the scripting process, as it provides the input graphical elements
+and output and must always be launched in order to execute the code.
+
+DunoCode is mainly aimed at 'on the fly' execution of scripts, but also:
+  when executing files;
+  to the creation of scripts with a partial graphical interface;
+  to those who want to perform operations with a unique, schematic and simple syntax.
+  at those who don't like the cryptic commands typical of bash (awk, sed, expr etc...).
+</pre>
+
+<pre id="basi" class="viste">
+<b>Hello World and basic syntax</b>
+<esempi>
+print &gt;Hello World
+<verde>#&gt; comment</verde>
+index = indexOf &gt;Hello World ; W ;
+print &gt;\index\
+end&gt;
+</esempi>
+The lines of code are composed of the scheme: 
+<b>variable =  directive &gt; parameters</b>
+Where directive is a predefined internal function; the &gt; symbol separates it
+by parameters that are separated from each other by semicolons(;). Any space
+preceding the semicolon and the following one are <b>not considered </b>in the parameters.
+The carriage return defines the end of the line and the 'end' directive closes the script.
+<verde>Comments </verde>can be written after the '#' function or on any line that does not contain the symbol ( &gt; ).
+Comments can also be written on the same line of a directive, as last parameter. If preceded 
+by a double slash (//), these parameters will be highlighted.
+
+<b>An empty directive is equal to <label onclick="vai('mem')" >mem</label> directive</b>. 
+
+When a variable is used in parameters <b>it must be placed between two backslashes</b>.
+Concatenation between strings and variables <b>does not</b> require symbols.
+
+Directives are not case sensitive (while parameters and variables are) and can be written with
+multiple spaces.
+
+Summary:
+-the general syntax is:
+      <vi>function without parameters</vi> &gt;
+  or: <vi>function </vi>&gt;<i> param1<rosso>;</rosso>param2<rosso>;</rosso>...</i>
+  or: <span style="color:blue; font-weight:bold"> variable</span> = <vi>function</vi> &gt; <i>param1<rosso> ; </rosso>param2<rosso> ; </rosso>...</i>
+-the end of the line is defined by the carriage return
+-the end of script is defined by the 'end' directive
+-directives are not case sensitive
+-parameters and variables are case sensitive
+-comments can be written on any line where the symbol &gt; is not present
+ or after the comment directive '#', or as the last parameter
+-the concatenation of data and variables does not require symbols
+-variables are recalled by placing them between backslashes.
+</pre>
+
+<pre id="errori"  class= "viste">
+<b>Errors</b>
+Errors are handled automatically.
+If you receive error messages from the operating system, close DUNO.
+A possible error in executing a file can be given by the ansi encoding
+of the file. Save the files to be executed in <b>UTF-8</b>.
+
+In case of missing parameters, the directive will still be executed if
+can use blank or zero default values. Otherwise the script is stopped and 
+the error reported.
+
+Syntax errors will be reported.
+
+Path not found. The script will run anyway.
+
+Out-of-range items in a list. However, a value (!error) will be returned and
+the script will run anyway.
+
+Stack overflow for loop too long or infinite. The loop does not cause overflow.
+
+When no errors are reported, but the code does not give expected results, try inserting
+<label onclick="vai('report')" >report</label> directives in your code.
+Also try highlighting the code and checking the script status from the interpreter menu.
+</pre>
+
+<pre id="controllo"  class= "viste">
+<b>Hashtag</b>
+The sign # is used as a control character in parameters Browser, prg, replaceLine 
+and ToPrinter directives. It also represents the comment directive.
+It also allows you to write the name of a variable in type parameters string,
+avoiding substitution with its value <label onclick="vai('variabili')">(See).</label>
+</pre>
+
+<pre id="output" class= "viste">
+<b>Output Directives</b>.
+To view the results of the functions, the following output commands
+can be entered:
+<label onclick="vai('print')" >Print&gt;</label>
+<label onclick="vai('lbl')" >Lbl&gt;</label>
+<label onclick="vai('notes')" >Notes&gt;</label>
+<label onclick="vai('command')" >Command&gt;</label>
+<label onclick="vai('text')" >Text&gt;</label>
+
+See also:
+<label onclick="vai('speak')" >Speak&gt;</label>
+<label onclick="vai('report')" >Report&gt;</label>
+Report is useful for viewing debug reports.
+
+<b>It is also possible to show, in the output box, the returned value
+from the function using the notation <rosso>show = </rosso> directive... </b>
+<esempi>
+show = listFilter &gt;\list\;z
+</esempi>
+</pre>
+
+<pre id="liste"  class= "viste">
+<b>Lists and matrix</b>
+Lists are adopted as arrays.
+A string containing vertical bars | (pipe), can be treated like
+string, or as a list depending on the directive.
+Matrix are not supported, but it is possible to extract data from a 
+linear list via various directives, including <label onclick="vai('nextrow')" >NextRow</label> and <label onclick="vai('listextract')" >ListExtract</label>.
+<esempi>
+list=mem&gt;White|Green|Black|Blue|Yellow|Red
+listAt&gt;\list\;2
+&gt;&gt;Black
+</esempi>
+The indexes in the lists start from zero.
+If you recall an element out of range, the value <b>!error</b> will be returned and the
+code will continue.
+To split on strings run <label onclick="vai('replace')">Replace</label> or <label onclick="vai('listfrom')">listFrom</label>.
+
+List of functions on lists:
+<label onclick="vai('align')"> align </label>
+<label onclick="vai('count')"> count </label>
+<label onclick="vai('listafter')"> listAfter </label>
+<label onclick="vai('listat')"> listAt </label>
+<label onclick="vai('listchop')"> listChop </label>
+<label onclick="vai('listcompare')"> listCompare </label>
+<label onclick="vai('listedit')"> listEdit </label>
+<label onclick="vai('listextract')"> listExtract </label>
+<label onclick="vai('listfilter')"> listFilter </label>
+<label onclick="vai('listfrom')"> listFrom </label>
+<label onclick="vai('listfuse')"> listFuse </label>
+<label onclick="vai('listgroup')"> listGroup </label>
+<label onclick="vai('listindex')"> listIndex </label>
+<label onclick="vai('listinsert')"> listInsert </label>
+<label onclick="vai('listjoin')"> listjoin </label>
+<label onclick="vai('listmatch')"> listMatch </label>
+<label onclick="vai('listmax')"> listMax </label>
+<label onclick="vai('listmid')"> listMid </label>
+<label onclick="vai('listremitems')"> listRemItems </label>
+<label onclick="vai('listremove')"> listRemove </label>
+<label onclick="vai('listsort')"> listSort </label>
+<label onclick="vai('listsum')"> listSum </label>
+<label onclick="vai('listswap')"> listSwap </label>
+<label onclick="vai('listtotable')"> listToTable </label>
+<label onclick="vai('reverse')"> reverse </label>
+<label onclick="vai('mem')"> mem </label>
+<label onclick="vai('nextitem')"> nextItem </label>
+<label onclick="vai('pixlist')"> pixList </label>
+<label onclick="vai('qs')"> qs </label>
+<label onclick="vai('selevery')"> sel_every </label>
+<label onclick="vai('seljoin')"> sel_join </label>
+<label onclick="vai('selsearch')"> sel_search </label>
+<label onclick="vai('select')"> select </label>
+ 
+</pre>
+
+<pre id="variabilinterne" class= "viste">
+<b>Internal variables and constants</b>
+The following variables and constants are already defined:
+<vi>s.</vi> :
+   semicolon (the semicolon should not be used directly when needed for
+   separate the parameters).
+<vi>t.</vi> : tabulator.
+<vi>z.</vi> : special character (ascii 30).
+<vi>n.</vi> : new line (Linux carriage return).
+<vi>rn.</vi> : carriage return + new line.
+<vi>E.</vi> :
+   separation character in paths (contains / in Linux, \ in Windows).
+<vi>user</vi> : user path ( home ). For other standard paths see <label onclick="vai('folder')">folder</label>.
+<vi>space</vi> :
+   blank space. It can be more readable insert this constant instead of the
+   space when it was the last character of a parameter.
+<vi>version</vi> : Duno version
+<vi>nothing</vi> : empty string. Introduced for readability
+<vi>selected</vi> :
+   data selected in a selection box, even when the user has opted
+   for a different return value (which ends up in the variable created by the programmer)  ).
+   If no item is selected, contains 'empty'.
+   It also stores the URL of the web page displayed in the DUNO browser and the
+   date selected in the picker control.
+
+</pre>
+
+<pre id="variabili" class= "viste">
+<b>Variabiles</b>
+Variables are strings that are converted into numbers, lists, dates etc...
+according to the directive.
+Variables are created with direct assignment from the function or via <label onclick="vai('mem')">mem</label> directive.
+They are preloaded during the code analysis phase, therefore regardless of the point
+in which they are initialized, <b>they exist with a null value from the first line of code</b>.
+They are recalled by placing their name between 2 backslashes: <i>\myVariable\</i>.
+
+Different ways to evaluate a variable:
+<esempi>
+Initialization or <rosso>reassignment</rosso> via mem or via empty directive:
+myVar =mem &gt;Hello World
+myVar = &gt;Hello World
+
+Initialization or <red>reassignment</red> via function:
+year = now &gt;y
+
+</esempi>
+
+Exception to inline enhancement is using <label onclick="vai('output')" >show</label>, which does not
+works as a variable, but as a display utility.
+
+<label onclick="vai('internal variables')" >internal variables</label> cannot be reassigned.
+In addition to 'mem' the following directives also perform <b>direct reassignment</b>:
+<label onclick="vai('nextitem')">nextItem</label>
+<label onclick="vai('nextrow')">nextRow</label>
+<label onclick="vai('nextval')">nextVal</label>
+<label onclick="vai('nextchars')">nextChars</label>
+
+To write the variable name use the # character after the backSlash:
+A = mem &gt;100
+print &gt;Value of \#A\ is \A\
+&gt;&gt;Value of \A\ is 100
+</pre>
+
+<pre id="condizioni"  class= "viste">
+<b>Conditions</b>
+The verification of conditions in DunoCode takes place via various directives
+whose beginning is always <rosso>if</rosso>.
+If the condition represented in the parameters is true, the code flows
+continues to the next line, otherwise the flow jumps to the corresponding one
+'else' directive, if present, or 'endif'.
+'Endif' must always close if.
+
+List of conditional directives:
+<label onclick="vai('ifeq')"> ifEq </label>
+<label onclick="vai('ifequiv')"> ifEquiv </label>
+<label onclick="vai('ifmin')"> ifMin </label>
+<label onclick="vai('ifmaj')"> ifMaj </label>
+<label onclick="vai('ifstring')"> ifString </label>
+<label onclick="vai('ifint')"> ifInt </label>
+<label onclick="vai('iffloat')"> ifFloat </label>
+<label onclick="vai('iffocus')"> ifFocus </label>
+<label onclick="vai('ifincluded')"> ifIncluded </label>
+<label onclick="vai('ifdate')"> ifDate </label>
+<label onclick="vai('ifleap')"> ifLeap </label>
+<label onclick="vai('ifexists')"> ifExists </label>
+
+<label onclick="vai('fileevent')"> fileEvent </label>
+<label onclick="vai('else')"> else </label>
+<label onclick="vai('endif')"> endif </label>
+
+</pre>
+
+<pre id="cicli" class="viste">
+<b>Loops</b>
+Loops in DunoCode are opened by one of the following directives:
+<label onclick="vai('nextval')">nextVal</label>
+<label onclick="vai('nextitem')">nextItem</label>
+<label onclick="vai('nextrow')">nextRow</label>
+<label onclick="vai('nextchars')">nextChars</label>
+
+And they are closed by the <label onclick="vai('next')">next</label> directive.
+If the opening directive is present, but the closing directive is not, the code from 
+the opening directive is still executed.
+<label onclick="vai('nextval')">NextVal</label> can be used for finite or infinite loops depending on the parameters.
+To break a loop, invoke the <label onclick="vai('break')">break</label> directive.
+
+Many list operations can avoid the use of iterative loops.
+For example extract data from a list, with <label onclick="vai('listextract')">listExtract</label>; sum numbers in a
+list, with <label onclick="vai('listsum')">listSum</label>; connect two lists with <label onclick="vai('listfuse')">listFuse</label>; etc...
+
+Given the characteristics of DunoCode commands, perform loops of many thousands
+of iterations, means drastically lengthen the completion time,
+especially if the cycle block includes more than one commands.
+Each instruction takes time to execute, due to the many checks that
+must perform and prevent overflow.
+<esempi>
+nextVal &gt;
+ ....
+next &gt;
+</esempi>Create an infinite loop. To get out of it it is necessary to impose a condition.
+<esempi>
+it =mem&gt;0
+step =mem&gt;1
+nextVal &gt;\it\;\step\;40
+ ....
+next &gt;
+</esempi>It only runs the loop 40 times
+
+LOOP A LIST <esempi>
+<esempi>
+list =mem&gt;blue|black|yellow|green
+tot = mem&gt;0
+step =mem&gt;2
+item = nextItem&gt;\list\;\step\
+ tot = calc &gt;\tot\+[--len>\item\--]
+next&gt;
+notes&gt;\tot\
+</esempi>
+</pre>
+
+<pre id="alias" class="viste">
+<b>Aliases</b>
+Aliases are more compact, but less readable terms than directives.
+The available aliases are:
+
+&gt; 12          equals: mem &gt; 12  and (s = &gt; 12 equals: s = mem &gt; 12 
+++ &gt;\num\     equals: num = calc &gt;\num\ + 1
+-- &gt;\num\     equals: num = calc &gt;\num\ - 1
+.myFunct&gt;     equals: funct &gt;myFunct
+
+</pre>
+
+
+<pre id="routine" class="viste">
+<b>Routines</b>
+If there is a need to call routines or sort code into blocks use directives
+<label onclick="vai('funct')">funct</label>, <label onclick="vai('endfunct')">endFunct</label> and <label onclick="vai('exit')">exit</label>.
+
+</pre>
+
+<pre id="annidamenti" class="viste">
+<b>Nestings</b>
+To allow the interpreter to understand that a <b>parameter</b> contains a function to execute, it is necessary
+enclose the function between <rosso>[--</rosso> and <rosso>--]</rosso> symbols.
+You can nest as many functions as you want.
+<i><b>Warning: <u>start-of-loop</u> directives such as nextval, nextchars etc... expand nested functions
+only the first time, and not at every iteration</b></i>.
+Nesting breaks DunoCode's typical and unique pattern and may make your code less readable.
+<esempi>
+ print&gt;Length of substring is: [--len&gt;[--midstring&gt;[--fileread&gt;[--dialog&gt;--]--];a;b;0;//midstring--]--]
+ end&gt;
+ </esempi>
+
+</pre>
+
+<pre id="ritroso" class="viste">
+<b>BackScript</b> or backward script is a convenient feature peculiar of DUNO.
+It allows you to pass a file to be processed to a script... from the file itself.
+We have a document (harvest.du) structured as follows:
+<esempi>
+Name  quintals
+Paul: 100
+Louis: 88
+Mario: 70
+Anna : 74</esempi>
+
+You want to find the total and average of the harvest without having to open every time
+the calculator.
+A script will be created only once, placed in a folder and forgotten.
+In the data file it will be sufficient to insert the in marker exactly at the beginning
+uppercase containing the script path:
+<esempi>&lt;DUNOCODE_PROCESS&gt;/Path/to/myScript&lt;/DUNOCODE_PROCESS&gt;</esempi>.
+<b>The path can be absolute or relative to the home (user in Windows).</b>
+The path /home/MARIA/Desktop/calculation is equivalent to /Desktop/calculation and related paths
+have precedence.
+By assigning the extension chosen for DunoCode scripts (typically .du), <b>to the
+data</b>, it will be executed upon double clicking, redirecting to the script.
+The document can still be opened by a text editor.
+When the interpreter reads the header it will load /Path/to/myScript, appending
+the following lines at the top of the same:
+<rosso>
+<b>dataPath</b> = mem&gt;/path/to/harvest.du
+<b>dataText</b> = fileRead&gt;\dataPath\
+<b>head</b> = mem&gt;&lt;DUNOCODE_PROCESS&gt;/Path/to/myScript&lt;/DUNOCODE_PROCESS&gt;
+dataText= replFirst&gt;\dataText\;\head\;
+</rosso>
+In the script, use the <b>dataText</b> variable (and possibly dataPath and head
+if you wanted to rewrite the source file.)
+This approach also allows you to move the data file anywhere, being
+it is enough that the script remains in its own folder.
+If problems are encountered with paths or file names, the interpreter
+will try to run the data source file (as the first file passed),
+therefore it will not give the desired result.
+The script we wrote could therefore be like this:
+<esempi>
+list = Listfrom&gt;\dataText\;:|\n.\
+tot = mem&gt;0
+num = mem&gt;0
+item = nextItem&gt;\list\;1
+  Iffloat&gt;\item\
+    tot = calc&gt;\tot\ + \item\
+    ++&gt;\num\
+  Endif&gt;
+next&gt;
+Notes&gt;Total harvested \tot\\n.\Average x worker [--decimal&gt;[--calc&gt;\tot\ / \num\--]; 2--]
+end&gt;
+</esempi>
+When we launch the harvest.du file, the script will actually be executed,
+supplemented by automatic lines.
+</pre>
+<pre id="codiceesterno" class="viste">
+<b>External code.</b>
+DunoCode allows you to automatically copy lines of code from files, via
+the pre-directive includes.
+<esempi>
+ &lt;include&gt;/path/to/file&lt;/include&gt;
+ </esempi>
+Wherever this line is present it will be replaced by the code present in the specified file.
+To point directly to the Dunocode folder created by the program, use the <b>colon</b> at
+start of path ( : corresponds to /home/$user/Dunocode ).
+<esempi>
+ &lt;include&gt;:/lib/file&lt;/include&gt; </esempi>
+ 
+The path must not contain variables.
+The included code, of course, should not end with End&gt;
+If there is no file in the path or if the tags are written incorrectly (e.g. &lt;i nclude&gt;),
+an error will be given. Be careful not to insert unnecessary spaces before or after the
+path and keep the file name case-sensitive.
+
+</pre>
+
+<pre id="grafiche" class="viste">
+<b>Graphic controls.</b>
+Graphic controls allow you to input data and display it
+in output. They return one or more values when they close.
+The directives that require controls are:
+
+<label onclick="vai('browser')">Browser</label>
+<label onclick="vai('command')">Command</label>
+<label onclick="vai('dialog')">Dialog</label>
+<label onclick="vai('draw')">Draw</label>
+<label onclick="vai('likeform')">LikeForm</label>
+<label onclick="vai('notes')">Notes</label>
+<label onclick="vai('numbox')">Numbox</label>
+<label onclick="vai('picker')">Picker</label>
+<label onclick="vai('select')">select</label>
+<label onclick="vai('qs')">qs </label>
+<label onclick="vai('seljoin')">Sel_Join</label>
+<label onclick="vai('selevery')">Sel_every</label>
+<label onclick="vai('selsearch')">Sel_search </label>
+<label onclick="vai('text')">Text</label>
+
+See also:
+ <label onclick="vai('window')">Window</label>
+</pre>
+
+<pre id="jsbash" class="viste">
+<b>Javascript and Bash</b>
+It is possible to expand the functionality of DunoCode, obtaining values from commands
+Bash or from html pages opened in the Duno browser.
+See:
+<label onclick="vai('prg')">Prg</label>
+<label onclick="vai('browser')">Browser</label>
+
+To get data from other areas, see also <label onclick="vai('clipboardev')">ClipboardEv</label>.
+</pre>
+
+
+<pre id="contatti" class="viste">
+Contacts: <b>nicniz@libero.it</b>
+
+<vi onclick="vai('funct')">How to execute routines or functions</vi>
+<vi onclick="vai('replace')">How to get a list from a text with separators</vi>
+<vi onclick="vai('diff')">How to get the absolute value</vi>
+<vi onclick="vai('fileinfo')">How to know if a path is a file or folder</vi>
+<vi onclick="vai('nextchars')">How to scan text by characters</vi>
+<vi onclick="vai('ifstring')">How to check the beginning or end of a text</vi>
+<vi onclick="vai('listfrom')">How to get a character not present in the text</vi>
+<vi onclick="vai('nextrow')">How to scan text by lines</vi>
+<vi onclick="vai('replaceline')">How to remove rows</vi>
+<vi onclick="vai('replaceline')">How to insert rows</vi>
+<vi onclick="vai('tiletext')">How to tile text</vi>
+<vi onclick="vai('folder')">How to get standard paths other than \user\</vi>
+<vi onclick="vai('listindex')">How to get the index of the line containing a text</vi>
+<vi onclick="vai('selsearch')">How to enter data into a selection box</vi>
+<vi onclick="vai('selsearch')">or perform a multiple selection</vi>
+<vi onclick="vai('selsearch')">How to get a path by dragging it onto a control</vi>
+<vi onclick="vai('window')">How to create a daemon or service</vi>
+
+</pre>
+
+<pre id="ash" class="viste">
+ <b>#&gt;...</b>
+Commenting directive.
+What is written after it is not considered by the interpreter.
+Comments can also be written without this directive, but in this case
+the greater than symbol (&gt;) must not be inserted in the comment.
+They can also be written on the same line as a directive, as <b>last parameter</b>.
+
+#&gt; &gt;&gt;&gt;comment
+&gt;&gt;&gt;<rosso>error</rosso>
+comment
+fileRead &gt;\aFile\;<verde>//highlightable comment</verde>
+fileRead &gt;\aFile\;comment
+
+</pre>
+
+<pre id="adddays" class="viste">
+ data = <b>AddDays&gt;\date\;\dd\</b>
+Adds to the specified date, the number of days to the second parameter.
+In Linux you may need to enter years with 4 digits (the year 10
+becomes 0010).
+
+</pre>
+
+<pre id="align" class="viste">
+ list = <b>Align&gt;\list\;\num | max\;\step\;\startIndex\</b>
+Set the length of the list elements to the first parameter, to the value passed
+per second, adding spaces or removing characters.
+If the second parameter is 'max' it sets the length of the elements to length
+of the longest element.
+The elements to align are all those placed starting from the index to the fourth
+parameter, and the subsequent ones for the interval to the third parameter.
+If the third and fourth parameters are omitted, all elements are aligned.
+However, it is preferable to always indicate the values (in case you want to fix them
+all elements, set 1 and 0 as the third and fourth parameters).
+
+<esempi> 
+align&gt;Paris|Rome|Buenos Aires|Los Angeles|Tokyo;8;1;0
+Paris   |Rome    |Buenos A|Los Ange|Tokyo 
+
+align&gt;Paris|Rome|Buenos Aires|Los Angeles|Tokyo;max;2;0
+Paris       |Rome|Buenos Aires|Los Angeles|Tokyo      
+
+</esempi>
+</pre>
+
+<pre id="ascii" class="viste">
+ int = <b>Ascii&gt;\char\</b>
+Returns the index of the passed ascii character.
+
+</pre>
+
+<pre id="audiorec" class="viste">
+ <b>AudioRec&gt;start[stop];\path\</b>
+Records sounds coming from the input configured in the settings
+operating system (e.g.: Control Center → Audio → “input” → [microphone] or
+[internal]).
+If the first parameter is 'start', it requires the path as the second parameter
+where to save the audio file (ogg format).
+If the first parameter is 'stop', it requires no further parameters and stops the
+registration.
+<esempi>
+command&gt;START REGISTRATION;OK
+audioRec&gt;start;\user\/audio1.ogg
+command&gt;STOP REGISTRATION;OK
+audioRec&gt;stop
+end&gt;
+</esempi>
+
+</pre>
+
+<pre id="battery" class="viste">
+ list = <b>Battery&gt;</b>
+Returns, in a list, battery charge and status.
+
+</pre>
+
+<pre id="break" class="viste">
+ <b>Break&gt;</b>
+It exits a loop, jumping to the next <label onclick="vai('next')">next</label> directive it encounters.
+</pre>
+
+<pre id="browser" class="viste">
+ string = <b>Browser&gt;\URL\; [false | true]</b>
+ string = <b>Browser&gt;#\html\; [false | true]</b>
+
+<i>Available only on GNU/Linux. To access the URLs, see also
+<label onclick="vai('network')">network</label> (also available on Windows).</i>
+
+Opens the page, at the URL passed in the first parameter, in a minimal browser.
+If the first parameter begins with #, the html code is loaded.
+If the second parameter is 'true', the browser closes immediately upon completion
+of loading. To navigate the second parameter must be 'false' (default).
+Upon closing, it returns the contents of the body (innerText) and put the 
+current URL, in the <b>\selected\</b> variable, relating to the page
+displayed. It can be used to get results from javascript in our
+input/output, as the content of the body can be varied with javascript.
+To <b>print</b> the page, call the relevant function in the html code
+Javascript "window.print();".
+
+</pre>
+
+<pre id="calc" class="viste">
+ float = <b>Calc&gt;\string\</b>
+Performs calculation on the passed expression.
+Accepts round, square and curly brackets, as long as the parentheses 
+are at the top level contain those of low level.
+<esempi>
+M = numbox&gt;Enter sum
+P = numbox&gt;Ins. percentage to be separated
+R = calc&gt;\M\*100/(100+\P\)
+notes&gt;Amount separated \R\
+</esempi>
+</pre>
+
+<pre id="call" class="viste">
+ string = <b>call&gt;myFunction | 0 ;[\args\]</b>
+Executes the function passed to the first parameter (it is not a variable) and defined by the directive
+<label onclick="vai('funct')">funct</label>. The function name must not contain the pipe (|) and pound (#) characters.
+White spaces in the function name are delated.
+The second parameter, if not empty, revalues the <b>\argList\</b> internal variable that can be 
+used as argument for the function.
+If the first parameter is zero (0) call recalls the beginning of the code.
+Returns the value returned by the called function.
+<b>You cannot call a function within itself, i.e. before its endfunct&gt;</b>
+However, it is possible to call other functions within a function.
+<esempi>
+currentYear = now &gt;y
+
+call &gt;changeYear;/budget.csv
+call &gt;changeYear;/budget.csv
+
+funct &gt;changeYear
+a = fileinfo &gt;\user\\argList\
+a = word &gt;\a\;-4;<verde>//The fourth last word is the year</verde>
+ifeq &gt;\a\;\currentYear\
+ print &gt;\bil\ already modified.
+else&gt;
+ print &gt;\bil\ not yet modified.
+endif&gt;
+endFunct &gt;
+end &gt;
+</esempi>
+</pre>
+
+<pre id="canc" class="viste">
+ <b>Canc&gt;\name\</b>
+Delete the variable.
+
+</pre>
+
+<pre id="case" class="viste">
+ string = <b>Case&gt;val ; \funct\ ; val2 ; \funct2\</b>
+Executes a function based on the return value of the last directive.
+In case a parameter in odd position coincides with that value (number or string),
+the function call to the next parameter is executed, similar to what it does the <label onclick="vai('call')">call</label> 
+directive, but, in this case, it does not accept parameters.
+Receives the return value of the called function.
+If, as a function, the string<rosso> end</rosso> is passed, the script is terminated upon any call.
+command &gt;click a button; Edit ; Add ; Delete ; Exit
+CASE &gt;1 ; edit ; 2 ; add ; 3 ; delete ; 4 ; <rosso> end</rosso>
+
+.edit &gt;
+...
+endFunct &gt;
+.add &gt;
+...
+endFunct &gt;
+.delete &gt;
+...
+endFunct &gt;
+end &gt;
+</pre>
+
+<pre id="chop" class="viste">
+ string = <b>Chop&gt;\text\;\fromBack\;[\fromFront\]</b>
+Delete from the bottom of the text to the first parameter the number of letters passed to the second.
+If the number is greater than the length of the text, the first is returned letter.
+If an optional third parameter is passed, strip the number from the beginning of the text
+of past letters.
+The parameters must not be negative.
+To shorten a string in another way, see <label onclick="vai('substring')">substring</label>.
+
+</pre>
+
+<pre id="chr" class="viste">
+ char = <b>Chr&gt;\num\</b>
+Returns the ascii character corresponding to the passed value.
+</pre>
+
+<pre id="clipboardev" class="viste">
+ string = <b>ClipboardEv&gt;</b>
+Stops script execution waiting for clipboard contents to come
+modified.
+New content is returned immediately.
+
+
+</pre>
+
+<pre id="close" class="viste">
+ <b>Close&gt;</b>
+Closes the interpreter. 
+
+</pre>
+
+<pre id="clr" class="viste">
+ <b>Clr&gt;</b>
+Cleans the output box, but not the label.
+
+</pre>
+
+
+<pre id="col" class="viste">
+ string = <b>Col&gt;\text\;\index1\;\idx\ | \len\ | 0</b>
+Returns a column of data from the text passed to the first parameter.
+The text is the one between the two indices at the second and third parameters, of
+each line.
+If the third parameter is zero, the selection is made from \index1\ to the end of
+each line.
+If the third parameter begins with +, indicates the length after \index1\.
+
+<esempi>
+tx =fileRead&gt;\user\/.bash_history
+notes&gt;[--col&gt;\tx\;0;5 --]
+notes&gt;[--col&gt;\tx\;2;+5 --]
+notes&gt;[--col&gt;\tx\;6;0--]
+end &gt;
+</esempi>
+</pre>
+
+<pre id="command" class="viste">
+ int = <b>Command&gt;[\prompt\;\b1\;\b2\;\b3\;\b4\]</b>
+Shows a window with a message (first parameter) and 4 buttons
+with the text passed in the other four parameters.
+Returns 1 2 3 or 4 depending on the button pressed.
+The parameters are optional.
+</pre>
+
+<pre id="copy" class="viste">
+ <b>Copy&gt;\text\</b>
+Copy the past text to the clipboard.
+</pre>
+
+<pre id="count" class="viste">
+ int = <b>Count&gt;\text\;\pattern\</b>
+Counts in the text the number of characters indicated in the second parameter.
+If you count the pipes ( | ), you get the maximum index of a list.
+</pre>
+
+<pre id="datediff" class="viste">
+ int = <b>Datediff&gt;\date1\;\date2\</b>
+Calculates the days difference between two dates.
+In Linux you may need to enter years with 4 digits (year 10 goes
+written 0010).
+
+</pre>
+
+<pre id="decimal" class="viste">
+ float = <b>Decimal&gt;\num\;\nDec\</b>
+Reduces (or increases) the number of decimals of the first parameter to what is 
+passed at the second. Returns <b>!error</b> if the first parameter is not a number.
+<esempi>
+
+show =decimal &gt;12.339;2
+show =decimal &gt;45.6;2
+show =decimal &gt;78;3
+
+12.33
+45.60
+78.000
+</esempi>
+</pre>
+
+<pre id="diagon" class="viste">
+ float = <b>Diagon&gt;\side1\;\side2\</b>
+Find the diagonal between the two sides.
+
+</pre>
+
+<pre id="dialog" class="viste">
+ path = <b>Dialog&gt;[dir|FILE];[\path\];[\msg\]</b> 
+Opens the system file explorer.
+If the optional 'dir' parameter is passed, the window allows selection
+a folder, otherwise it allows you to select a file.
+The second optional parameter indicates the initial path to show and the 
+third parameter optional, passes a message on the title bar.
+Returns the complete selected path.
+</pre>
+
+<pre id="diff" class="viste">
+ unsigned_Float = <b>Diff&gt;\value1\;\value2\</b>
+Returns the difference between the two passed numbers, in absolute value.
+If one of the 2 parameters is 0, returns the absolute value of the other parameter.
+</pre>
+
+
+<pre id="draw" class="viste">
+ void | path = <b>Draw&gt;line|circle|rect|filledCirc|filledRect|save|clear;r|g|b|y|w;x1;y1;v1;v2</b>
+Draws the shapes passed to the first parameter in a 360 x 240 pixel box.
+The color of the shape is passed to the second parameter: r = red, g = green, b = blue, y= yellow,
+w= white (default).
+The subsequent parameters define the coordinates and dimensions of the shape.
+If the first parameter is <b>save</b>, the image is saved. If it is <b>clear</b>, it is reset.
+The image persists even after the script has been executed.
+To hide the image without deleting it, use the interpreter menus.
+</pre>
+
+
+<pre id="drive" class="viste">
+ list = <b>Drive&gt;</b>
+Returns, in a list, the name of the drives connected to the PC and mounted,
+preceded by the path in the filesystem where they are mounted.
+<esempi>
+show = drive&gt;
+end&gt;
+&gt;&gt;tmpfs|/run|/dev/sda12|/|/dev/sda7|MyPARTITION2|/dev/sdb1|MyUSB
+</esempi>
+</pre>
+
+
+<pre id="end" class="viste">
+ <b>End&gt;[notify]</b>
+Closes the script.
+If placed before the end of the listing, it leads to early 
+termination of the same.
+If there is a notification text, it will be printed on output.
+</pre>
+
+
+<pre id="else" class="viste">
+ <b>Else&gt;</b>
+Line marking directive searched by conditional statements, when 
+the condition is not true. Its use in ifs is not mandatory.
+</pre>
+
+<pre id="endfunct" class="viste">
+ <b>EndFunct&gt;</b>
+Closes a block of code opened by <label onclick="vai('funct')">funct</label>.
+After this statement, execution returns to the point of the call.
+</pre>
+
+<pre id="endif" class="viste">
+ <b>Endif&gt;</b>
+Line marking directive necessary and mandatory to close statements
+conditional.
+</pre>
+
+<pre id="exit" class="viste">
+ <b>Exit&gt;[returned]</b>
+Allows to exit a function early.
+If an optional parameter is passed, it is
+used as return value.
+</pre>
+
+
+<pre id="filecopy" class="viste">
+ bool = <b>FileCopy&gt;\fromPath\;\toPath\</b>
+Copy the file at the first parameter to the path to the second parameter.
+If the second parameter contains only the file name, it will be copied
+in the application folder.
+If a path does not exist, returns <b>!error</b>.
+</pre>
+
+<pre id="filedel" class="viste">
+ bool = <b>FileDel&gt;\path\</b>
+Delete the file.
+</pre>
+
+<pre id="fileevent" class="viste">
+ string = <b>FileEvent&gt;\path\</b>
+Stops script execution, waiting for the \path\ file to be modified, renamed or deleted.
+The new text is returned.
+If the file at the passed path does not exist, <b>!error</b> is returned.
+The directive allows, for example, to pass data between two running scripts.
+</pre>
+
+<pre id="fileinfo" class="viste">
+ list = <b>FileInfo&gt;\path\;[compact]</b>
+Returns a list with information about access, writing and size of the passed file.
+The last element of the list reports the <b>path type</b>: file, dir, img_file.
+If the file is an image, it also returns width and height in pixels.
+If the second optional parameter 'compact' is passed, the date and time are returned
+in a compact format and easier to process.
+</pre>
+
+<pre id="fileread" class="viste">
+ string = <b>FileRead&gt;\path\</b>
+Returns the text contained in the passed file.
+</pre>
+
+<pre id="filerename" class="viste">
+ bool = <b>FileRename&gt;\oldPath\;\newPath\</b>
+Rename (or move) the file at the first parameter with the name at the second parameter.
+If the second parameter contains only the file name, the file will be moved
+in the application folder.
+Returns true, false or '!error' (when the file does not exist).
+</pre>
+
+<pre id="filewrite" class="viste">
+ path = <b>FileWrite&gt;\path\;\content\;[!][append]</b>
+Creates a file at the path passed to the first parameter with the specified contents.
+By default, if the file already exists, it is overwritten.
+To prevent overwriting, pass the third (optional) parameter a period
+exclamation ( ! ). This allows new files to be numbered without overwriting.
+If the third optional parameter is <b>append</b>, the content is appended to
+file if it exists, otherwise create the file and append the text.
+If the writing succeeds, the function returns the path, otherwise it returns <b>!error</b>
+</pre>
+
+<pre id="folder" class="viste">
+ bool = <b>Folder&gt;create|del|copy|standard;\folder\;[\folder2\]</b>
+Create, delete or copy the folder. Or it returns the standard paths of the 
+system in a list.
+If the first parameter is copy, a third parameter is required.
+If the third parameter contains only the file name, the operation will occur 
+in the application folder.
+If the first parameter is <i>standard</i> with no further parameters, it returns a list with
+the standard paths, ordered as follows:
+Desktop, download, documents, pictures, music, movies.
+However, if the first parameter is <i>standard</i> and the second parameter is one of
+   <i><rosso>  Desktop, download, documents, pictures, music, movies</rosso></i>
+only the requested path will be returned.
+
+</pre>
+
+<pre id="fromclipboard" class="viste">
+ string = <b>FromClipboard&gt;</b>
+Return the contents of the clipboard.
+(Changing the graphics server deletes the clipboard.)
+</pre>
+
+<pre id="funct" class="viste">
+ <b>Funct&gt;name</b>
+Defines the beginning of a block of code closed with <label onclick="vai('endfunct')">endFunct</label>.
+This directive <b>is not</b> executed when the code encounters it, and the entire block is
+skipped. It is executed only per call from the <label onclick="vai('call')">call</label> and <label onclick="vai('case')">case</label> directives.
+The call is made to the name passed to the parameter.
+To exit the function before endFunct, call <label onclick="vai('exit')">exit</label>.
+It is possible to use an alias in place of 'funct', with the function name preceded by a period.
+<esempi>
+call &gt;open
+call &gt;edit
+.open&gt;<verde>  // alias</verde>
+  .....
+endFunct &gt;
+funct&gt;edit
+  .....
+endFunct &gt;
+</esempi>
+</pre>
+
+<pre id="getlines" class="viste">
+ string = <b>GetLines&gt;\string\;\from\;\idx\ | \len\ | .</b>
+From the text passed to the first parameter it obtains the lines between the index to
+second parameter and the option to the third parameter.
+If the third parameter is an integer preceded by the + symbol, it indicates the number
+of lines to keep. If it is a simple integer, indicate the index of the last
+line to hold.
+If it is a dot it gets all lines after the index \from\.
+If the values are not consistent, they are brought to a consistent value.
+See also: <label onclick="vai('replaceline')">replaceLine</label>.
+<esempi>
+fileRead&gt;\user\/.bash_history
+mem&gt;tx
+notes&gt;[--getLines &gt;\tx\;10;15--]
+notes&gt;[--getLines &gt;\tx\;10;+8--]
+notes&gt;[--getLines &gt;\tx\;10;.--]
+end&gt;
+</esempi>
+
+</pre>
+
+<pre id="ifdate" class="viste">
+ <b>IfDate&gt;\string\</b>
+Conditional statement that returns no values.
+Tests whether the passed string is a date. If it is, the code flow continues
+to the next line, otherwise it executes the relevant 'else' statement or the
+relative 'endif' statement.
+<esempi>
+data1= text&gt;Write a date;
+data2= text&gt;Write another date;
+ifDate&gt;\data1\
+  ifDate&gt;\data2\
+    print&gt;both are dates!
+  else&gt;
+    print&gt;the second is not a date
+  endif&gt;
+else&gt;
+  print&gt;the first is not a date
+endif&gt;
+end&gt;
+</esempi>
+</pre>
+
+<pre id="ifeq" class="viste">
+ <b>IfEq&gt;\a\;\b\[;not]</b>
+Conditional statement that returns no values.
+Check if the two parameters are the same. Or check if they are different, if so
+the third optional parameter <b>not</b> is passed.
+If they are, the code flow continues to the next line, otherwise it executes
+the relative 'else' statement or the relative 'endif' statement.
+In some cases it may be convenient to call <label onclick="vai('ifequiv')">ifEquiv</label>
+<esempi>
+num = numbox&gt;Write a number from 0 to 5;
+x = random&gt;5
+ifEq&gt;\num\;\x\
+  print&gt;You guessed!  
+else&gt;
+  print&gt;You didn't guess the number \x\
+endif&gt;
+end&gt;
+</esempi>
+See also <label onclick="vai('oneof')">oneOf</label>.
+</pre>
+<pre id="ifequiv" class="viste">
+ <b>IfEquiv&gt;\a\;\b\[;not]</b>
+Conditional statement that returns no values.
+Checks whether the two parameters are equal, ignoring the left and right spaces and the alternation
+uppercase/lowercase. Or check if, with the same rule, they are different, if the third
+optional parameter <b>not</b> is passed.
+If they are, the code flow continues to the next line, otherwise it executes the statement
+relative 'else' or relative 'endif' statement.
+
+The following statements are <b>true with ifEquiv, and would be false with ifEq</b>
+<i>ifEquiv&gt;10;  10
+ifEquiv&gt;Mario;MARIO</i>
+ </pre>
+
+<pre id="ifexists" class="viste">
+ <b>IfExists&gt;\path\;[not]</b>
+Conditional statement that returns no values.
+Check if the path exists. If it exists, the code flow continues at the line
+next, otherwise execute the related 'else' statement or statement
+relative 'endif'.
+If the second optional parameter <b>not</b> is passed, check if the path is not
+exists.
+<esempi>
+
+ifExists&gt;/usr/share/alsa
+  launch&gt;/usr/share/alsa
+endif&gt;
+ifExists&gt;\user\/prices.txt;not
+  fileWrite&gt;\user\/prices.txt;
+endif&gt;
+end&gt;
+</esempi>
+</pre>
+
+<pre id="iffloat" class="viste">
+ <b>IfFloat&gt;\string\;[f]</b>
+Conditional statement that returns no values.
+Tests whether the passed string is an integer or decimal number.
+Or if it is exclusively a number with a decimal point, if the third 
+parameter optional 'f' is passed.
+If true, the code flow continues to the next line, otherwise executes
+the relative 'else' statement or the relative 'endif' statement.
+See also <label onclick="vai('ifint')">ifInt</label>.
+
+</pre>
+
+<pre id="iffocus" class="viste">
+ <b>IfFocus&gt;box | find | box_or_find </b>
+Executes the next line of code when the focus is on the widget passed to
+parameter. The 'box' parameter indicates the output box; 'find' indicates the box
+of research; 'box_or_find' means both.
+If the focus is not on the widget, the directive executes the relevant 'else' statement
+or the related 'endif' statement.
+It makes sense when used in a loop.
+<esempi>
+nextVal &gt;\it\
+  ......
+  ifFocus &gt; box
+    break&gt; 
+  endif &gt;
+next &gt;
+....
+</esempi>
+</pre>
+
+<pre id="ifincluded" class="viste">
+ <b>IfIncluded&gt;\number\;\min\;\max\</b>
+Conditional statement that returns no values.
+Checks whether the value at the first parameter is between the value at the second
+and the value to the third. If it is, the code flow continues to the next line,
+otherwise it executes the relative 'else' statement or the relative 'endif' statement.
+<esempi>
+b = numbox&gt;Byte value
+ifIncluded&gt;\b\;0;255
+else&gt;
+  command&gt;the byte value is incorrect;Ok
+endif&gt;
+end&gt;
+</esempi>
+</pre>
+
+
+<pre id="ifint" class="viste">
+ <b>IfInt&gt;\str\</b>
+Conditional statement that returns no values.
+Tests whether the string is an integer (or with zero decimals).
+If it is, the code flow continues to the next line, otherwise
+executes the relative 'else' statement or the relative 'endif' statement.
+<esempi>
+tx = text&gt;Write a number
+ifInt&gt;\tx\
+   print&gt;the number is an integer
+else&gt;
+   ifFloat&gt;\tx\
+     print&gt;the number is not an integer
+   else&gt;
+     print&gt;You did not write a number
+  endif&gt;
+endif&gt;
+end&gt;
+</esempi>
+</pre>
+
+<pre id="ifleap" class="viste">
+ <b>IfLeap&gt;\string\ </b>
+Conditional statement that returns no values.
+Tests whether the string represents a leap year. If it is, the flow of
+code continues to the next line, otherwise executes the 'else' statement
+relative or the relative 'endif' statement.
+
+</pre>
+
+<pre id="ifmaj" class="viste">
+ <b>IfMaj&gt;\num1\;\num2\[;orEq]</b>
+Conditional statement that returns no values.
+Checks whether the first numeric parameter is greater than the second, or whether
+is greater than or equal if the optional third parameter <b>orEq</b> is passed.
+If it is, the code flow continues to the next line, otherwise it executes
+the relative 'else' statement or the relative 'endif' statement.
+To compare strings call <label onclick="vai('ifstring')">ifString</label>
+
+</pre>
+
+<pre id="ifmin" class="viste">
+  <b>IfMin&gt;\num1\;\num2\[;orEq]</b>
+Conditional statement that returns no values.
+Checks if the first numeric parameter is less than the second, or if
+is less than or equal if the third optional parameter <b>orEq</b> is passed.
+If it is, the code flow continues to the next line, otherwise it executes
+the relative 'else' statement or the relative 'endif' statement.
+To compare strings call <label onclick="vai('ifstring')">ifString</label>
+</pre>
+
+<pre id="ifstring" class="viste">
+ <b>IfString&gt;\string\ ; starts|ends|contains|startsi|endsi|containsi|min|maj|Len>|Len<|Len=|Len!|Len≥|Len≤ ; \pattern\</b>
+Conditional statement that returns no values.
+Checks whether the string at the first parameter begins, contains, ends, is less than
+(in alphabetical order) or greater than the string in the third parameter, in
+based on the second parameter passed, or if its length meets the given conditions.
+The <b>startsi, endsi, containsi</b> parameters perform case insensitive checking.
+If true, the code flow continues to the next line, otherwise executes
+the relative 'else' statement or the relative 'endif' statement.
+<esempi>
+ifstring&gt;Quel ramo del lago di Como; ends ;omo
+  ....
+endif&gt;
+ifstring&gt;Quel ramo del lago di Como; Len> ; 100
+  ....
+endif&gt;
+end&gt;
+</esempi>
+See also <label onclick="vai('oneof')">oneOf</label>.
+</pre>
+
+
+<pre id="imgfromlist" class="viste">
+ path = <b>ImgFromList&gt;\pixList\[; 1 | 2 | 3]</b>
+Save as a PNG file, an image from a list of pixels in text format and
+returns the path.
+The format of the list is like that returned by the directive <label onclick="vai('pixlist')">PixList</label>.
+The list should be very small given the conversion times from text to image!
+A second optional parameter can be passed. If the second parameter is 1,
+the image to be created is considered to have 1 million colors (each value of
+list must be between 0 and 99). If it is 2, the image is considered a
+only 1000 colors (values from 0 to 9 for each sub-pixel). If it is 3, the image comes
+considered to be 3 colors (white, black and grey) and each entire pixel is represented
+from a single value: 0 (black), 1 (gray), or 2 (white).
+In other cases, the image will have 16 million colors (values from 0 to 255 per
+sub-pixels).
+Files with the same name are not overwritten.
+
+</pre>
+
+<pre id="indexof" class="viste">
+ int = <b>IndexOf&gt;\text\;\pattern\ | {*dgt} | {*upp} | {*low};\start\ | all</b>
+Gets the zero-based index of the first occurrence of the pattern with respect to
+string to the first parameter, starting from the position to the third parameter.
+Also accepts generic parameters:
+{*dgt} : gets the index of the first digit;
+{*upp} : get the index of the first uppercase letter;
+{*low}: Get the index of the first lowercase (unstressed) letter.
+If the third parameter is all, it returns a list with all the indexes of the
+occurrence (strings only).
+<esempi> 
+tx =mem &gt;--my son Tommy is 23, not 24!
+show = IndexOf &gt;\tx\;Tommy;0
+9
+show = IndexOf &gt;\tx\;my;6
+12
+show = IndexOf &gt;\tx\;{*dgt};0
+18
+show = IndexOf &gt;\tx\;{*dgt};25
+26
+show = IndexOf &gt;\tx\;{*upp};0
+9
+show = IndexOf &gt;\tx\;{*low};0
+2
+show = IndexOf &gt;\tx\;my;All
+2|12
+
+</esempi>
+</pre>
+
+<pre id="insert" class="viste">
+ string = <b>Insert&gt;\string\;\index\;\new\;[every]</b>
+Inserts the string \new\ into the string at the first parameter, at the passed index
+to the second parameter.
+If the index is less than 0, it is brought to 0. If it is beyond the length, it is
+brought to length.
+If the fourth parameter, optional, is present and greater than zero, the insertion
+it is repeated after as many characters as passed by the parameter itself.
+
+</pre>
+
+
+<pre id="keep" class="viste">
+ string = <b>Keep&gt;\string\;!aA1s|e;[chars...]</b>
+From the string to the first parameter, it keeps only the character type
+provided in the options at the second and third parameters.
+Or it only keeps the character type that doesn't match the second one
+and third parameter, if the <rosso>!</rosso> symbol is present at the second parameter.
+The second parameter defines the following generic options:
+a = keep lowercase letters;
+A = maintains uppercase letters;
+1 = keeps digits;
+s = keep whitespace;
+à = keeps the accented letters à è é ì ò ù;
+| = separates the held strings, creating a list;
+e = option to use with |. Adds <b>also empty elements</b> to the list for i
+     characters not coinciding with the criteria.
+The third parameter defines other specific characters to keep (or not keep).
+<esempi> 
+tx= mem&gt;Is Tom 25? I thought he had more :)!!
+show = keep &gt;\tx\;Aas
+Is Tom  I thought he had more 
+show = keep &gt;\tx\; aA1
+IsTom25Ithoughthehadmore
+show = keep &gt;\tx\;as;?à
+s om ?  thought he had more 
+show = keep &gt;\tx\;aAà|;
+Is|Tom|I|thought|he|had|more|
+show = keep &gt;\tx\;!1|e;
+Is Tom ||? I thought he had more :)!!
+show = keep &gt;\tx\;1|e;
+|||||||25||||||||||||||||||||||||||||
+</esempi>
+</pre>
+
+<pre id="lastindexof" class="viste">
+ int = <b>LastIndexOf&gt;\text\;\pattern\</b>
+Gets the zero-based index of the last occurrence of the string per second
+parameter compared to the string at the first parameter.
+
+</pre>
+
+<pre id="launch" class="viste">
+ <b>launch&gt;\path\</b>
+Launch the file at the path with the default program.
+
+</pre>
+
+<pre id="lbl" class="viste">
+ [string] = <b>Lbl&gt;get | set;[\text\]</b>
+Gets or sets the output label text.
+If the first parameter is get, returns the label text.
+If the first parameter is set, writes the to the output label
+the second parameter.
+Supports html format.
+
+</esempi>
+</pre>
+
+<pre id="lcase" class="viste">
+ string = <b>Lcase&gt;\text\</b>
+Converts to lowercase (as opposed to <label onclick="vai('ucase')">ucase</label>).
+
+</pre>
+
+
+<pre id="len" class="viste">
+ int = <b>Len&gt;\text\</b>
+Returns the length of the passed string.
+</pre>
+
+<pre id="likeform" class="viste">
+ list = <b>LikeForm&gt;\fieldsList\;\ValueList or empty\</b>
+Show two lists (the starting data must be separated by |).
+The first selectable list indicates the keys, while the second is intended for
+be filled out.<b>The first element of each list is used as the header.</b>
+The second list is returned.
+If the list of values (second parameter) contains less data than the field list,
+zero values are added. If it contains multiple values, they remain, but
+they cannot be modified.
+<esempi>
+list = likeForm &gt;DETAILS|NAME|SURNAME|CITY;FILL IN|||
+</esempi>
+</pre>
+
+<pre id="listafter" class="viste">
+ list = <b>ListAfter&gt;\list\;\textItem\;\length\[;f]</b>
+Returns a series of items from the list to the first parameter based on two
+filtering options.
+If the fourth parameter "f" is omitted, the returned elements are the matching ones
+to the text passed as the second parameter and the subsequent ones in the number 
+indicated in the third parameter.
+If the fourth parameter "f" is passed, the elements of the list that are searched for
+contain, even as a fragment, the data in the second parameter and are returned
+only the subsequent elements in the number indicated in the third parameter.
+The search is not case sensitive. If a data is out of range, is inserted
+<b>!error</b> in the list.
+<esempi>
+list =&gt;Paolo|25|Maria|33|Luigi|35|PAOLO|30|Anna|27|Carlo|45
+show = listAfter&gt;\list\;paolo;2
+show = listAfter&gt;\list\;LO;2;f
+&gt;Paolo|25|PAOLO|30
+&gt;25|30|45
+</esempi>
+
+</pre>
+
+<pre id="listat" class="viste">
+ string = <b>ListAt&gt;\list\;\idx\ | .</b>
+Separates the string at the first parameter at the | character (pipe) e
+returns the element at the index indicated by the second parameter.
+<b>The index can also derive from a direct calculation.</b>
+If the second parameter is a <b>dot</b>, return the last element of the list.
+The indices start from zero.
+If the index does not exist (out of range), <b>!error</b> is returned.
+
+<esempi>
+list =&gt;DO|RE|MI|DOm|FA|SOL|LA|SI
+it = &gt;2
+show = listAt&gt;\list\;\it\
+#&gt;MI
+show = listAt&gt;\list\;\it\+3
+#&gt;SOL
+show = listAt&gt;\list\;.
+#&gt;SI
+end&gt;
+
+</esempi>
+</pre>
+
+<pre id="listchop" class="viste">
+ list = <b>ListChop&gt;\list\;\num\</b>
+Removes the number of elements from the bottom of the list passed to the first parameter
+to the second parameter.
+To shorten the list in another way, see also <label onclick="vai('listremove')">listRemove</label> and  <label onclick="vai('listmid')">listMid.</label>
+
+<esempi>
+show = listChop&gt;A|B|C|D|E|F|G; 2
+#&gt;A|B|C|D|E
+</esempi>
+
+</pre>
+
+<pre id="listcompare" class="viste">
+ list = <b>ListCompare&gt;\list1\;\list2\; + | - | \index\</b>
+Compare two lists. If the third parameter is +, returns the elements of the
+first list also present in the second.
+If the third parameter is -, it returns the elements of the first list that are not present
+in the second.
+If the third parameter is an index, compare the elements in the two lists, at
+specified index.
+-Returns !error if one of the two lists does not contain this index;
+-returns the difference between the two elements, if they are numeric;
+-returns '=' if they are equal and not numeric;
+-returns '!' if they are different and not numeric
+
+</pre>
+
+<pre id="listedit" class="viste">
+ list = <b>ListEdit&gt;\list\;\index\;\new\</b>
+Change the element at index \index\ with the \new\ element
+
+</pre>
+
+<pre id="listextract" class="viste">
+ list = <b>ListExtract&gt;\list\;\every\;\index\;[\index2\]</b>
+Extracts from the list the element specified in the third parameter or the 2 elements specified
+in the third and fourth parameters, and all subsequent ones skipping by the number of elements
+specified in the second parameter.
+<esempi>
+show =listextract &gt;A|0|B|1|C|2|D|3|E|4|F|5|G|6|H|7 ; 3 ; 1 ; 2
+&gt;&gt;0|B|C|2|3|E|F|5|6|H
+</esempi>
+</pre>
+
+<pre id="listfilter" class="viste">
+ list = <b>ListFilter&gt;\list\;\pattern\;[invert]</b>
+Filter the list based on the string passed as the second parameter e
+returns a new list.
+If the optional third parameter <b>invert</b> is passed, invert the filter, so
+eliminate patterns.
+See also <label onclick="vai('listmatch')">listMatch.</label>
+</pre>
+
+<pre id="listfrom" class="viste">
+ list = <b>ListFrom&gt;\text or file\;sep|sep2|sep3|...;[true|false];[noPipe]</b>
+In the text the first parameter (string or file) replaces characters or strings,
+listed in the list at the second parameter, with the pipe.
+If the first parameter is a valid path, the content of the file is passed,
+otherwise the text is passed.
+If the optional third parameter 'noPipe' is added, the pipes present in the text
+original (first parameter) are replaced by a character not present in the rest of the text.
+Furthermore, this character is added to the first element of the list returned.
+<esempi>
+show = ListFrom &gt;1-Nick|c.\n.\2-Mary|h.\n.\3-Jimmy|s.\n.\4-Anne|b.;\n.\|-; noPipe
+&gt;&gt;¦|1|Nick¦c.|2|Mary¦h.|3|Jimmy¦s.|4|Anne¦b.
+ </esempi>
+
+</pre>
+
+<pre id="listfuse" class="viste">
+ list = <b>ListFuse&gt;\list1\;\list2\;{MODEL}</b>
+Fits the elements of two lists based on the alternation pattern
+passed as the third parameter.
+The model is obtained simply by representing the elements of list1 with
+the number 1 and list2 items with any character other than
+1 and from space.
+A 221 pattern means: alternates 2 elements from list2 (22) and one from
+list1 (1). It could also have been written Ab1 xx1 **1 etc...
+<esempi>
+LIST1 = mem&gt;0|1|2|3|4|5|6|7|8|9
+LIST2 = mem&gt;A|S|D|G|H|K|P|N|M|C
+
+show = listfuse&gt;\LIST1\;\LIST2\;112
+&gt;&gt;0|1|A|2|3|S|4|5|D|6|7|G|8|9|H|
+show = listfuse&gt;\LIST1\;\LIST2\;***1
+&gt;&gt;A|S|D|0|G|H|K|1|P|N|M|2|C|
+End&gt;
+</esempi>
+Move items in a list
+<esempi>
+list =&gt;Mario|25/10/1945|Rome|Luis|13/10/1964|Madrid|Angela|15/11/1969|Berlin|Mary|10/02/1947|Montreal
+data = listextract&gt;\list\;3;1;1
+nomi = listextract&gt;\list\;3;0;2
+new = LISTFUSE&gt;\data\;\nomi\;122
+new = listinsert&gt;\new\;3;\n.\;3
+print&gt;|[--chop&gt;\new\;1--]
+end&gt;
+|25/10/1945|Mario|Rome|
+|13/10/1964|Luis|Madrid|
+|15/11/1969|Angela|Berlin|
+|10/02/1947|Mary|Montreal|
+
+</esempi>
+</pre>
+<pre id="listgroup" class="viste">
+ list = <b>ListGroup&gt;\list\;\num_items\;\withstring\</b>
+Joins the elements of the list to the first parameter in groups made of as many elements as
+passed to the second parameter. The elements are joined by the string passed to the third parameter.
+Similar to listJoin.
+<esempi>
+listGroup &gt;0|1|2|3|4|5|6|7|8|9; 2 ;_
+0_1|2_3|4_5|6_7|8_9
+</esempi>
+</pre>
+
+<pre id="listindex" class="viste">
+ int = <b>ListIndex&gt;\list\;\item\[;from];[f]</b>
+Returns the index of the first element corresponding to the second parameter,
+starting from the index to the third parameter. If the third parameter is not present,
+or it is not consistent the search starts from index 0.
+If the fourth parameter 'f' is passed, returns the index of the <b>first element
+containing </b>the string per second.
+If the element is not present, returns -1.
+<esempi>
+list = &gt;Africa|America|Antarctica|Asia|Europe|Oceania
+listIndex &gt;\list\;Asia
+&gt;&gt;3
+listIndex &gt;\list\;pe
+&gt;&gt;-1
+listIndex &gt;\list\;pe;0;f
+&gt;&gt;4
+</esempi>
+Get the index of the line containing a text
+<esempi>
+list = listfrom>\user\/aFile.txt ; \n.\ ; noPipe
+listIndex &gt;\list\;Asia
+</esempi>
+</pre>
+
+<pre id="listinsert" class="viste">
+ list = <b>ListInsert&gt;\list\;\index\;new;[ EVERY ]</b>
+Inserts the third parameter at the index passed as the second parameter.
+If the fourth parameter (optional) is added, the insertion takes place
+repeatedly, after each occurrence indicated in the parameter itself.
+To simply add items to the top or bottom of the list, use also
+the textual method ( list =mem&gt;\list\|new )
+<esempi> 
+LIST =&gt;1|2|3|4|5|6|7|8|9|10
+show = listInsert&gt;\LIST\;2;***
+#&gt;1|2|***|3|4|5|6|7|8|9|10
+show = listInsert&gt;\LIST\;2;***;3
+#&gt;1|2|***|3|4|5|***|6|7|8|***|9|10
+</esempi>
+It is also possible to use listInsert to mark certain points to replace
+recursively.
+
+</pre>
+
+<pre id="listjoin" class="viste">
+ list = <b>ListJoin&gt;\list\;\index\;\length\;\with\</b>
+Joins the elements of \list\, starting from the index \index\ and up to the index
+\index\ + \length\. Replaces the pipe ( | ) with the \with\ element.
+If the length is beyond the limit of the list, joins the elements from the index
+in the end.
+<esempi> 
+show = listjoin &gt;A|B|C|D|E|F|G|H|L|M ; 3 ; 4 ; \space\
+end&gt;
+</esempi>
+A|B|C|D E F G H|L|M
+</pre>
+<pre id="listmatch" class="viste">
+ list = <b>ListMatch&gt;\list\;\pattern\;\pos\</b>
+Filter the list based on the string passed as the second parameter, but instead
+return same items (<label onclick="vai('listfilter')"> listFilter </label>), returns previous items
+or later than the number of positions passed to the third parameter.
+The third parameter can be positive or negative.
+Items are added to a list.
+If an element is not found in that position, <b>!error</b> is appended
+<esempi> 
+Working_hours = &gt;;paolo|June|35|Luigi|June|36|Anna|June|32|Paolo|July|31|Anna|July|29|Luigi|July|33|Anna|August|25|Paolo| August|30|Louis|August|36
+list = listMatch &gt;\Working_hours\;paolo;2
+notes>Paolo worked  [--listSum>\list\;1;0--] hours this year.
+end&gt;
+</esempi>
+
+</pre>
+<pre id="listmax" class="viste">
+ list = <b>ListMax&gt;\myList\;[max][min]</b>
+Puts the highest and lowest two numbers in a list of numbers into a list of 2 elements.
+If the second optional parameter is <b>max</b>, only the highest number is returned.
+If the second optional parameter is <b>min</b>, only the lowest number returns.
+
+</pre>
+
+<pre id="listmid" class="viste">
+ list = <b>ListMid&gt;\list\;\fromIndex\;\idx\ | . | \len\</b>
+Returns a new list with the elements between the two indices to the parameters
+2 and 3. The indices start from zero.
+If the third parameter is a dot ( . ), returns the elements from the index
+to the second parameter at the end.
+If the third parameter is preceded by the + symbol it represents the length-1,
+that the sublist must have.
+
+<esempi> 
+list =mem&gt;A|B|C|D|E|F|G|H|I|L|M|N
+show = ListMid&gt;\list\;2;5
+show = ListMid&gt;\list\;3;.
+show = ListMid&gt;\list\;5;+1
+end&gt;-----
+</esempi>
+C|D|E|F
+D|E|F|G|H|I|L|M|N
+F|G
+</pre>
+
+<pre id= "listremitems" class="viste">
+ list = <b>listRemItems>\list\;shorter|longer|eq|not|starts|ends|contains;\pattern\[;i]</b>
+From the list passed to the first parameter removes elements according to the instructions
+pass into the subsequent parameters.
+The second parameter specifies one of the following options:
+-shorter: removes elements shorter than the value passed to the third parameter.
+-longer: removes elements longer than the value passed to the third parameter.
+-eq: remove elements that match the string passed to the third parameter.
+-not: remove elements other than the string passed to the third parameter.
+-starts or ends or contains: removes elements that start, end, or contain
+  the string passed to the third parameter.
+If the fourth optional parameter is <b>i</b>, the search string will be <i>case insensitive</i>.
+<esempi> 
+<i>We remove empty elements from a list</i>
+list =mem&gt;red||blue|green|yellow|||pink
+show = listremitems&gt;\list\;shorter;1
+</esempi> 
+ 
+</pre>
+
+
+<pre id="listremove" class="viste">
+ list = <b>ListRemove&gt;\myList\;\index1\;R | \idx\ | \index1\ | . | \len\ </b>
+From the list passed to the first parameter removes the elements from the index to
+second parameter based on the option to the third.
+If the option is the letter "r" or "R" (recursion), removes the element
+after the index to the second parameter and its multiples.
+If the option is an index, removes items up to the index.
+To remove just one element, indicate the same index for the second and third
+parameter.
+To remove all elements after the index indicated in the second parameter,
+insert a dot ( . ) as the third parameter.
+If the third parameter is preceded by the + symbol, it indicates the length -1 of the
+items to remove.
+<esempi> 
+list =&gt;0|1|2|3|4|5|6|7|8|9
+
+show = listRemove&gt;\list\;4;7
+#&gt;0|1|2|3|8|9
+show = listRemove&gt;\list\;4;.
+#&gt;0|1|2|3
+show = listRemove&gt;\list\;4;+1
+#&gt;0|1|2|3|6|7|8|9
+show = listRemove&gt;\list\;4;4
+#&gt;0|1|2|3|5|6|7|8|9
+
+<rosso>In the following list the removal is recursive for names only.
+(necessary to add elements at the top to start from the correct index)</rosso>
+list =&gt;Mario|Bianchi|Milano|Anna|Rossi|Roma|Carlo|Verdi|Napoli
+show = listRemove&gt;||\list\;2;r
+#&gt;||Bianchi|Milano|Rossi|Roma|Verdi|Napoli
+</esempi>
+</pre>
+
+<pre id="listsort" class="viste">
+ list = <b>ListSort&gt;\myList\;[ num | date ]</b>
+Returns a new sorted list, from a list.
+The new list is sorted in ascending alphabetical order.
+If you intend to treat the elements as numbers or as dates,
+add the second optional parameter, num or date.
+To reverse the sorted list see <label onclick="vai('reverse')">reverse</label>.
+<esempi>
+list =&gt;12|20|300|7|41|xyz|17|20
+show = listsort&gt;\list\
+&gt;&gt;12|17|20|20|300|41|7|xyz   alphabetical order
+
+show = listsort&gt;\list\;num
+&gt;&gt;xyz|7|12|17|20|20|41|300   numerical order
+</esempi>
+</pre>
+
+<pre id="listsum" class="viste">
+ float = <b>ListSum&gt;\list\;[\every\;\startIndex\]</b>
+Add the numbers in the list to the first parameter.
+The second parameter indicates step of the list to add every time.
+The third parameter is the starting index.
+Use instead of <label onclick="vai('calc')">calc</label> to add many numbers.
+<esempi>
+hours_worked = &gt;Gino|30|Anna|26|Rino|25|Maria|28
+show = listsum&gt;\hours_worked\;2;1
+#&gt;109 
+
+</esempi>
+</pre>
+
+<pre id="listswap" class="viste">
+ list = <b>ListSwap&gt;\list\;\index1\;\index2\</b>
+From the list to the first parameter, exchange the elements at the passed indices
+to the second and third parameters.
+<esempi>
+hours_worked = &gt;Gino|30|Anna|26|Rino|25|Maria|28
+show = listSwap&gt;\hours_worked\;1;5
+#&gt;Gino|25|Anna|26|Rino|30|Maria|28
+
+</esempi>
+</pre>
+
+<pre id="listtotable" class="viste">
+ string = <b>ListToTable&gt;\list\;\nCols\</b>
+Create an html table from a list.
+The number of columns is passed by the second parameter,
+the number of rows is defined automatically.
+Returns the complete html code.
+<esempi>
+list =&gt;name|country|role|Jack|USA|broker|Jose|Spain|dancer|Maria|Italy|pizza chef|David|Israel|military|Olga|Russia|caregiver
+html = listToTable &gt;\list\;3
+browser &gt;#\html\;false
+
+</esempi>
+</pre>
+
+
+<pre id="math" class="viste">
+ float = <b>Math&gt;option;\num\</b>
+Executes the mathematical function at the first parameter on the value passed as the second parameter.
+The first parameter must be chosen from one of the following functions:
+<b>acos</b> : returns the arccosine of the angle \num\ in radians.
+<b>asin</b> : returns the arcsine of the angle \num\ in radians.
+<b>atan</b> : returns the arctangent of the angle \num\ in radians.
+<b>cos</b> : returns the cosine of the angle \num\ in radians.
+<b>deg</b> : Converts \num\ radians to degrees.
+<b>Ln </b>: returns the natural logarithm of \num\.
+<b>log</b> : returns the base 10 logarithm of \num\.
+<b>pi </b>: returns pi.
+<b>rad</b> : Converts degrees \num\ to radians.
+<b>sin </b>: returns the sine of the angle \num\ in radians.
+
+See also <label onclick="vai('diagon')">Diagon</label>.
+<esempi>
+rad = math &gt;rad; 60
+cos = math &gt;cos; \rad\
+notes &gt; The cosine of 60 is \cos\
+
+</esempi>
+</pre>
+
+
+<pre id="mem" class="viste">
+ <b>Mem&gt;name[; value]</b>
+Assign a value (even empty) to a variable:
+<esempi> x = mem&gt; 150</esempi>.
+If the variable already exists, it is revalued, otherwise it is created.
+No blank spaces are allowed in the variable name other than the following symbols: # &gt; = %
+Whenever the name of a directive is omitted, the interpreter considers it a mem directive.
+See also <label onclick="vai('variabili')">variables</label>.
+</pre>
+
+<pre id="midstring" class="viste">
+ string = <b>Midstring&gt;\text\;\string1\;\string2\;[\fromIndex\];[i]</b>
+Returns a string between the string at the second parameter and the string at
+third, starting from the beginning or from the index to the fourth parameter, if present.
+If the second delimiter is not found or is empty, it is returned
+the substring between the first and the end of the <b>line</b>.
+If the two delimiters are equal, the string contained between them is returned.
+If the fourth parameter <b>i</b> is passed, the search is case insensitive.
+<esempi>
+xml= fileread &gt;\user\/myXML.xml
+mid = midstring &gt;\xml\;&lt;Invoice&gt;;&lt;/Invoice&gt;;0;i
+mid = midstring &gt;\mid\;&lt;amount&gt;;&lt;/amount&gt;;0;i
+print &gt;Amount = \mid\
+end&gt;
+</esempi>
+</pre>
+
+<pre id="mod" class="viste">
+ int = <b>Mod&gt;\num\;\divisor\[; #]</b>
+Modulo operation, with maximum value option.
+Returns the remainder after dividing the number \num\ by a divisor \divisor\.
+If \num\ is greater than \divisor\ and the optional third parameter is #, return
+\divisor\, so that \num\ doesn't overflow the maximum value in an increasing loop.
+Without the third parameter the result is always circular.
+<esempi>
+mod &gt;7;20
+7
+mod &gt;20;7
+6
+mod &gt;20;7;#
+7
+
+</esempi>
+</pre>
+
+<pre id="network" class="viste">
+ string = <b>Network&gt;get | post ; \url\ ; [\json\]</b>
+Gets or sends data from/to a url.
+Internet connection is required to execute this directive.
+If the first parameter is 'get' it returns the source of the URL to the second parameter.
+If the first parameter is 'post' send the data in <b>json</b> format to the url at the second parameter
+passed to the third parameter. The answer comes back. 'Post' is generally used for posting
+automated online form data.
+<esempi>
+show = network &gt; get ;https://duckduckgo.com/
+end&gt;
+----------------------------------------------------------------------------------------------------
+show = network &gt; post ;https://reqbin.com/echo/post/json; {"name1":"value1","name2":"value2"}
+end&gt;
+</esempi>
+</pre>
+
+<pre id="next" class="viste">
+ <b>Next&gt;</b>
+Return to the function that started the <label onclick="vai('cicli')">loop</label>.
+
+</pre>
+
+<pre id="nextchars" class="viste">
+ string = <b>NextChars>\~text\;[\n_chars\]</b>
+From the text contained in the variable to the first parameter, it gets the
+initial number of characters at the second parameter.
+Then delete these characters from the text and revalue the variable.
+<b>The second parameter cannot be 0.</b>
+If the second parameter is omitted, one char is deleted.
+If all content is deleted, the variable is evaluated with <b>!error</b>.
+When (and if) the code encounters a <label onclick="vai('next')">next</label>. directive, it
+will return to this line, as long as there are letters, otherwise
+will come out after 'next'.
+</pre>
+
+<pre id="nextitem" class="viste">
+ string = <b>NextItem>\~list\;\n_to_delete\</b>
+From the list stored in the variable at the first parameter, gets the first element.
+Then delete from the list the number of elements passed to the second parameter and
+revalues the variable. If the second parameter is omitted, one item is deleted.
+<b>The second parameter cannot be 0.</b>
+If all content is deleted, the variable is evaluated with <b>!error</b>.
+When (and if) the code encounters a <label onclick="vai('next')">next</label> directive, it will return
+to this line, as long as there are elements, otherwise it will exit after 'next'.
+</pre>
+
+<pre id="nextrow" class="viste">
+ string = <b>NextRow&gt;\~text\;[\n_to_delete\]</b>
+From the text passed as the first argument it gets the first line. Then remove the
+number of lines indicated in the second parameter (minimum 1) by the \~text\ variable,
+which is revalued. If the second parameter is omitted, one line is deleted.
+The original contents of the variable will be lost.
+If all content is deleted, the variable is evaluated with <b>!error</b>.
+If the row is a list, nextRow actually treats the text as a two-dimensional array.
+The line for this function is delimited by the 'new line' character (\n.\).
+When (and if) the code encounters a <label onclick="vai('next')">next</label> directive, it will return to
+this directive, as long as there are lines, otherwise it will exit after the 'next'.
+<esempi> 
+tx = text &gt;Add lines or accept;apples|strawberries|peaches|grapes\n.\car|bike|motorcycle\n.\red|green|blue\n.\Anna|Maria|Marco|Fabio|Andrea
+r = NEXTROW&gt;\tx\;1
+   show = listAt&gt;\r\;0
+next&gt;
+end&gt;
+</esempi>
+</pre>
+
+<pre id="nextval" class="viste">
+ <b>NextVal>[~ | \~iterator\ ; \step\ ; \max\]</b>
+This function returns no values.
+If the first parameter is an empty value or is the tilde character (~), executes
+the next line and will be repeated on the <label onclick="vai('next')">next</label>, generating an infinite loop.
+If the first parameter is present, <b>it must be a variable</b> and the next 2
+parameters must be also passed.
+Increment the iterator value to the first parameter by the value passed to
+second parameter and revalues the variable.
+<b>The second parameter cannot be 0.</b>
+Keep in mind that the increment occurs as soon as the code encounters this directive,
+so adjust its initial value.
+The third parameter indicates the maximum value that the iterator must reach.
+When (and if) the code encounters a <label onclick="vai('next')">next</label> directive, it will return to this line,
+to infinity (if the first parameter is empty or ~) or until the iterator at the first
+parameter will have a value equal to or less than the value of the third parameter,
+otherwise it will exit after the 'next'.
+It is possible to exit this loop at any time with the <label onclick="vai('break')">break</label> statement.
+
+<esempi> 
+#&gt;Ask for a number three times and add the values
+it =  mem&gt;0
+ris = mem&gt;0
+nextVal&gt;\it\;1;3
+  n   = numbox&gt;write a number (sum = \ris\)
+  ris = calc&gt;\n\ + \ris\
+next&gt;
+print&gt;\ris\
+end&gt;
+</esempi>
+Infinite loop (exits by clicking on the text box)
+<esempi> 
+nextVal&gt;
+  progress&gt;
+  ifFocus&gt; box
+     break&gt;
+  endif&gt;
+next&gt;
+end&gt;
+</esempi>
+</pre>
+
+<pre id="no" class="viste">
+ string = <b>No&gt;\text\;\char1\;\char2\</b>
+From the text passed as the first parameter, delete all parts between
+delimiting characters (parameters 2 and 3).
+Delimiters must be single characters.
+<esempi> 
+show = no&gt;today is a good (bad) day (maybe)...; ( ; )
+#&gt;today is a good  day ... 
+</esempi>
+</pre>
+
+<pre id="notes" class="viste">
+ <b>Notes&gt;text</b>
+Opens a new notes window.
+The note opens with any text passed.
+It does not return values and does not block script execution.
+
+</pre>
+
+<pre id="notify" class="viste">
+ <b>notify&gt; </b>
+Plays a notification sound. 
+
+</pre>
+
+<pre id="now" class="viste">
+ date = <b>Now&gt;[y M d  h m s z]</b>
+Returns the current date and time. Each of the following characters, passed as
+parameters, is replaced by its value:
+y= year M= month d= day h= hour m= minute s= second z= thousandth of a second
+<esempi>
+#&gt; if today was 09/20/2024
+show = now&gt;d/M/y h:m   --- ok boy! 
+20/09/2024 12:25   --- ok bo2024! 
+
+</esempi>
+</pre>
+
+<pre id="numbox" class="viste">
+ float = <b>Numbox&gt;\prompt\</b>
+Opens a numeric box. If the OK key is pressed, the number returns.
+If the Cancel or Close key is pressed, zero is returned.
+Numbers with decimals require the use of a comma or dot according
+to the local system. 
+
+</pre>
+
+<pre id="ofweek" class="viste">
+ int = <b>OfWeek&gt;\date\</b>
+Gets the day of the week from 1 to 7.
+Returns 0, if the date is incorrect.
+
+</pre>
+
+<pre id="oneof" class="viste">
+ string = <b>OneOf>\itemList\ ; \text\ ; [ i ]</b>
+Searches the text at the second parameter for one of the elements from the list 
+at the first parameter.
+If a parameter is empty or if no element is found in the text,
+returns an empty value. Otherwise it returns the first element found.
+If the third optional parameter 'i' is passed, the search will be case insensitive.
+<esempi> 
+tx = &gt;It was a bright cold day in April, and the clocks were striking thirteen
+show = oneOf &gt;march|april|may|june; \tx\ ; i
+&gt;&gt;april
+</esempi>
+</pre>
+
+<pre id="osversion" class="viste">
+ string = <b>OsVersion&gt; </b>
+Returns the operating system version, kernel version, and graphics platform name.
+
+</pre>
+
+<pre id="pathup" class="viste">
+ path = <b>PathUp&gt;\path\</b>
+Returns the top level of a path.
+That is, the folder where the file is located \path\.
+
+</pre>
+
+<pre id="pcname" class="viste">
+ string = <b>PcName&gt; </b>
+Returns the pc name.
+
+</pre>
+
+<pre id="picker" class="viste">
+ list + date = <b>Picker&gt;</b>
+Shows a window from which to select a date and get the location
+of its upper left corner and its size.
+When the window closes, it returns a list with the 4 values (the position
+defined by x and y, the width and the height).
+The selected date is returned in the \selected\ variable.
+
+</pre>
+
+<pre id="pixlist" class="viste">
+ list = <b>PixList&gt;\imgPath\;\x\;\y\;\w\;\h\[; 1 | 2 | 3]</b>
+From the image to the path it gets a list with the RGB values of the rectangle
+defined by the subsequent parameters (x position, y position, width, height).
+The list separates the rows of pixels with the <rosso>new line</rosso> character (\n.\).
+It splits pixels with the <rosso>pipe</rosso> (|).
+The 3 sub-pixels are separated by pipes or by <rosso>"G" and "B"</rosso> (green and blue. The red follows the pipe).
+The list ends with the string "#w*h#", where w is the width of the image and h
+is the height.
+A contiguous red and gray pixel are then represented: 255<esempi><b>G</b></esempi>0<esempi><b>B</b></esempi>0|128<esempi><b>G</b></esempi>128<esempi><b>B</b></esempi>128|
+Or else 255|0|0|128|128|128| 
+An optional sixth parameter can be passed.
+If the parameter is 1, the list to be created is reduced to 1 million colors,
+with memory gain (values from 0 to 99 for each sub-pixel where each unit is worth 2.56).
+If the parameter is 2, the list is reduced to just 1000 colors (values from 0 to 9 for
+each sub-pixel where each unit is worth 25.6).
+If the parameter is 3, the list is reduced to white, black and gray (values from 0 to 2 for
+every pixel, without sub-pixel).
+In other cases, the list remains at 16 million colors (values from 0 to 255 per sub-pixel).
+To create an image from such a list, use <label onclick="vai('imgfromlist')">imgFromList</label>.
+If the list was created with option 1, 2 or 3, imgFromList should also have the
+same option.
+</pre>
+
+<pre id="playwav" class="viste">
+ <b>PlayWav&gt;\path\</b>
+Plays wav sound in the background.
+
+</pre>
+
+<pre id="pow" class="viste">
+ float = <b>Pow&gt;\num\;\pow\</b>
+Raises the first parameter to the power of the second.
+Remember that a number raised for a fraction returns the <b>root</b>.
+For the simple square root use <label onclick="vai('sqrt')">sqrt</label>.
+<esempi>
+show = pow&gt;3;2
+9 
+<rosso>Find a cube root</rosso>
+k =&gt;3
+k = calc&gt;1/\k\
+show = pow&gt;27;\k\
+3
+</esempi>
+</pre>
+
+<pre id="prg" class="viste">
+ [string] = <b>Prg&gt;[ \app\;\arg\|\arg2\|...]</b>
+If there are no parameters, opens the applications folder.
+If there are parameters, start the process at the \app\ parameter with the
+list arguments to the second parameter.
+To insert the pipe as a parameter, add a # sign: <b>#|</b>
+Returns the value of the standard output possibly returned by the command.
+
+<esempi>
+notes &gt;[--prg &gt;top;-n|1|-b--]
+#&gt;Returns the standard output of top 
+
+show =Prg &gt;uname;-n
+#&gt;Returns the standard output
+
+Prg &gt;firefox;
+#&gt;Open the program
+
+Prg &gt;firefox;\user\/image1.jpg
+#&gt;Open the image in Firefox
+
+show = Prg &gt;echo;A#|B
+#&gt;A|B
+</esempi>
+</pre>
+
+<pre id="print" class="viste">
+ string = <b>Print&gt;Hello world</b>
+Append the parameter to the output box.
+Returns the text.
+
+</pre>
+
+<pre id="progress" class="viste">
+ <b>Progress&gt;[#]</b>
+Show a counter in the interpreter interface.
+Every time the code encounters this instruction, an internal counter 
+comes up incremented and its value shown.
+It can be used to show the progress of a cycle.
+If the optional parameter # is passed, the counter is reset.
+It does not return values.
+
+</pre>
+<pre id="qs" class="viste">
+ int = <b>Qs&gt;\list\</b>
+Quick select, it's a quick menu.
+Shows a choice box with the items listed in the list given to the parameter passed.
+The first item in the list is used as a header and cannot be selected.
+Unlike <label onclick="vai('select')">select</label>, it does not allow you to perform other operations
+and <b>closes immediately upon selection</b>, returning the selected index and puts 
+the text of the element in the \selected\ variable.
+
+</pre>
+
+<pre id="random" class="viste">
+ int | char = <b>Random&gt;0 | \num\ | char</b>
+Returns a random number or random letter.
+If the parameter is 0, returns a random number.
+If the parameter is an integer, returns a random number between zero and
+the parameter.
+If the parameter is written 'char', it returns a random letter.
+
+</pre>
+
+<pre id="remove" class="viste">
+ string = <b>Remove&gt;\text\;\fromIndex\;\idx\ | \len\</b>
+Removes the characters between the second and third indices from the string
+parameter (including).
+If the second index is preceded by the + symbol it represents the length -1
+of the string to remove.
+
+</pre>
+
+<pre id="repeat" class="viste">
+ string = <b>Repeat&gt;\text\[;\num\]</b>
+Repeats the string at the first parameter the specified number of times (second parameter).
+If the second parameter <b>is not passed</b>, returns the string.
+
+</pre>
+
+<pre id="replace" class="viste">
+ string = <b>Replace&gt;\text\;\string\;\new\;[i]</b>
+Replaces the text contained in the second parameter in the first parameter,
+with that contained in the third.
+If the fourth parameter <b>i</b> is passed, the substitution is case insensitive.
+Similar functions: <label onclick="vai('replfirst')">replFirst</label>, <label onclick="vai('listfrom')">listFrom</label>, <label onclick="vai('replaceline')">replaceLine</label>.
+<esempi>
+show = replace&gt;my text ; ex ; oas
+my toast
+</esempi>
+To split a string use replace :
+<esempi>
+replace&gt;aa $ bb $ cc $ dd ; $; |
+#&gt;text become a list.
+</esempi>
+Transforming a string into a list of chars:
+<esempi>
+replace&gt;Star;;|
+|S|t|a|r|  
+</esempi>
+Remove a string from another :
+<esempi>
+replace&gt;drivers ; r ; \nothing\
+dives
+</esempi>
+</pre>
+
+<pre id="replaceline" class="viste">
+ string = <b>ReplaceLine&gt;\text\;\lineNumber\;\new\ | #</b>
+Edit, delete or insert lines in the text.
+Replaces, in the text at the first parameter, the line at the index passed to the second
+parameter, with the text passed to the third.
+The row index starts from zero.
+To delete the line, pass the sign # as the third parameter. If the hashtag
+must be the string \new\, pass a double hashtag.
+To insert rows, enter carriage returns in the \new\ text as in the example:
+<esempi>
+text =&gt;White\n.\Black\n.\Gray\n.\Blue
+lines =getlines&gt;\text\;2;2
+show = replaceLine&gt;\text\;2;\lines\\n.\Red
+White
+Black
+Gray
+Red
+Blue
+</esempi>
+</pre>
+
+<pre id="replfirst" class="viste">
+ string = <b>ReplFirst&gt;\text\;\string\;\new\</b>
+Replaces only the first occurrence of the text in the text for the first parameter
+passed as the second parameter, with the one passed as the third parameter.
+<esempi>
+show = replFirst &gt;go play bingo;go;never
+never play bingo
+
+</esempi>
+</pre>
+
+<pre id="report" class="viste">
+ <b>report&gt;[toFileOnly][toFile]</b>
+Appends a debug report with the variable values to the output box.
+It does not return values.
+If the optional toFile parameter is passed, the report is also saved in the
+file /home/$USER/report_Duno.txt.
+If the optional toFileOnly parameter is passed, the report is only saved
+in the file /home/$USER/report_Duno.txt but not shown in the box.
+
+</pre>
+
+<pre id="reverse" class="viste">
+ string | list = <b>Reverse&gt;\myList\;[list]</b>
+Reverses a string or the elements of a list.
+If the first parameter is a list and the second optional parameter 
+is 'list', reverses the list, otherwise reverses the string..
+<esempi>
+show = REVERSE&gt;Jim|Anne|Rino|Mary; list
+show = REVERSE&gt;Jim|Anne|Rino|Mary
+show = REVERSE&gt;blue sky
+#&gt;Mary|Rino|Anne|Jim|
+#&gt;yraM|oniR|ennA|miJ
+#&gt;yks eulb
+</esempi>
+</pre>
+
+<pre id="right" class="viste">
+ string = <b>Right&gt;\text\;\num\</b>
+Returns a number of right characters in the string equal to
+second parameter.
+
+</pre>
+
+<pre id="round" class="viste">
+ int = <b>Round&gt;\decimal\[; up | down]</b>
+Rounds the number in the first parameter to the nearest integer.
+Always rounds down, if the second optional parameter 'down' is added.
+Always round up, if the second optional parameter 'up' is added.
+
+</pre>
+
+<pre id="screenshot" class="viste">
+ path = <b>Screenshot&gt;\x\;\y\;\w\;\h\</b>
+ path = <b>Screenshot&gt;\x\|\y\|\w\|\h\</b>
+ path = <b>Screenshot&gt; full | me </b>
+Takes a screenshot starting from the x and y position and for the width w e
+the height h of the screen.
+Accept the 'full' parameter, which allows you to capture the entire screen, or
+the 'me' parameter which allows you to capture the interpreter's window, or
+the 4 parameters x,y,w,h or a list with the 4 values.
+Returns the path of the image.
+<i>Currently in session Wayland only works with the 'me' parameter.</i>
+
+</pre>
+
+<pre id="screensize" class="viste">
+ list = <b>ScreenSize&gt;[w][h] </b>
+Returns, in a list, the width and height of the screen, in pixels.
+If the w parameter is passed, it returns only the width.
+If the parameter h is passed, it returns only the height.
+
+</pre>
+
+<pre id="selevery" class="viste">
+ list | int | string = <b>Sel_every&gt;\myList\;\IndexJump\;\start\;[nocheck][all] </b>
+Shows a choice box with list items (separated by |) that
+are found at the index indicated in the third parameter and all subsequent ones
+are found after the index jump assigned to the second parameter.
+The first item in the list is used as a header and cannot be selected.
+For the rest it follows the rules of <label onclick="vai('select')">select</label>
+
+
+</pre>
+
+<pre id="seljoin" class="viste">
+ int | list | string = <b>Sel_join&gt;\myList\;\num_item_joined\;[nocheck][all]</b>
+Shows a choice box with list items (separated by |).
+On each line, as many elements as indicated by the second parameter will be shown.
+E.g. a list with 100 elements, in which the second parameter is 5, shows a
+choice box with 20 rows, each with 5 items.
+The first item in the list is used as a header and cannot be selected.
+For the rest it follows the rules of <label onclick="vai('select')">select</label>
+ 
+</pre>
+
+<pre id="selsearch" class="viste">
+ string = <b>Sel_search&gt;\inList\</b>
+Shows a choice box with items from a list, and a text box for search among them.
+The search can also be performed based on unordered characters present in the elements.
+Multiple items can be selected and each can be edited.
+The elements passed to the text area can be further modified and are returned when the 
+window closes.
+<b>Dragging a file into this control</b> appends its path to the drop-down box.
+It can also be used to make multiple selections.
+</pre>
+
+<pre id="select" class="viste">
+ int | list | string = <b>select&gt;\myList\;[nocheck][all]</b>
+Shows a choice box with items listed in a list separated by |.
+The first item in the list is used as a header and cannot be selected.
+From the new window you can perform other operations on the list.
+When closed, the text selected goes in the <b>\selected\ </b> variable.
+A list is returned, whose first element is always the index selected while 
+the subsequent ones are the reprocessed data with the choice options.
+It is possible to prevent multiple choices by setting the fourth parameter to 'nocheck',
+in this way you will only get the selected index.
+It is possible to open the select with the 'All items' option already selected
+setting the fourth parameter to 'all'.
+
+</pre>
+
+
+<pre id="speak" class="viste">
+ <b>Speak&gt;\text\</b>
+Makes the computer speak the text passed up to 1000 characters.
+
+</pre>
+
+<pre id="sqrt" class="viste">
+ float = <b>Sqrt&gt;\num\</b>
+Returns the square root of the passed number.
+To obtain a root with a different base see <label onclick="vai('pow')">pow</label>
+</pre>
+
+<pre id="subdir" class="viste">
+ list = <b>SubDir&gt;\path\;[full]</b>
+Returns a list with the files and folders contained in the passed folder.
+If it is not a folder it returns <b>!error</b>.
+If the second optional parameter <i>full</i> is passed, the list will contain the complete paths.
+<esempi>
+GET ALL FILES IN THE DOCUMENT FOLDER AND SUB-FOLDERS
+
+list = SUBDIR &gt;[--folder&gt;standard;Documents--] ; full
+ris =MEM &gt;\nothing\
+folders =MEM &gt;\nothing\
+
+file = nextItem &gt;\list\;1
+ progress &gt;
+ fi=fileinfo &gt;\file\
+ ifstring &gt;\fi\;ends;dir
+  path = SUBDIR &gt;\file\;full
+  list =MEM &gt;\list\|\path\
+  folders =MEM &gt;\folders\|\file\
+ else&gt;
+  ris = MEM &gt;\ris\\file\|
+ endif&gt;
+next &gt;
+
+select&gt;List of all files|\ris\
+list = listremItems&gt;\folders\;shorter;1
+select&gt;List of subfolders|\list\
+end &gt;
+</esempi>
+
+</pre>
+
+<pre id="substring" class="viste">
+ string = <b>Substring&gt;\text\;\fromIndex\;\idx\ | \len\ | .</b>
+Returns a string extracted from the text at the first parameter, between
+the index to the second parameter and the option to the third parameter.
+The indices start from zero.
+The third parameter, if preceded by the + symbol, indicates the length, instead
+the index, which must have the substring.
+If the second index is inconsistent, returns the string from the first index
+consistent in the end.
+To get a substring between index \fromIndex\ and the end, insert
+a negative or dot (.) to the third parameter.
+<esempi>
+show = substring&gt;0123456789;5;8
+567
+show = substring&gt;0123456789;5;+2
+56
+show = substring&gt;0123456789;50;8
+
+show = substring&gt;0123456789;5; .
+56789  
+
+</esempi>
+</pre>
+
+
+<pre id="text" class="viste">
+ string = <b>Text&gt;\prompt\;\default\</b>
+Opens a text area. The first parameter heads the text area, the second
+inserts a default text.
+If the OK key is pressed, the written text returns.
+If the Cancel key is pressed, empty text is returned.
+The parameters are optional.
+
+</pre>
+
+<pre id="thispath" class="viste">
+ path = <b>ThisPath&gt;[full][fileName]</b>
+Returns the directory of the running script.
+If you are executing a block instead of a file, returns <b>!error</b>.
+<rosso>If the interpreter allows you to rerun the script, the second time
+the code stored as a block will be executed and thisPath&gt; he will not give
+the same result. Relaunch the script, rather than rerunning the code.</rosso>
+If the parameter is full, it returns the full path with the file name
+running.
+If the parameter is fileName, returns only the name of the running file.
+
+</pre>
+
+<pre id="tiletext" class="viste">
+ string = <b>TileText&gt;\tx1\;\tx2\;[\n_spaces\] </b>
+Place the texts passed to the first two parameters line by line.
+The texts are placed side by side vertically separated by the number of spaces
+passed to the third parameter (default a space).
+If one of the two texts has fewer lines than the other, a
+asterisk in place of the missing line.
+<esempi>
+tx = fileRead&gt;\user\/.bash_history
+tx1 = col&gt;\tx\;0;8
+tx =col&gt;\tx\;3;11
+show =TileText&gt;\tx1\;\tx\;2
+</esempi>
+</pre>
+
+<pre id="time" class="viste">
+ string | int = <b>Time&gt;add | diff;\time1\; \msec\ | \time2\</b>
+If the first parameter is add, adds to the time at the second parameter the number 
+of thousandths of a second passed to the third.
+If the first parameter is diff, finds the difference between the times at the second 
+and third parameter.
+The time must consist of at least hours and minutes, but can also contain seconds 
+and milliseconds.
+The separator in times can be a comma, a period or a colon (:).
+
+</pre>
+
+<pre id="tohex" class="viste">
+ string = <b>ToHex&gt;\num\ </b>
+Converts the passed number to hexadecimal string.
+
+</pre>
+
+<pre id="toprinter" class="viste">
+ <b>ToPrinter&gt;\text\ | #\imgpath\</b>
+Sends the passed parameter to the printer (without options) and prints it directly.
+The first character is used as a control character:
+if the character is the # sign, prints the image to the path (if present);
+otherwise print the text.
+To print the pound sign as the first character, pass a double hashtag (##),
+The first one will not print.
+Returns "no printer" if it does not find any connected printers, otherwise
+the function returns nothing
+
+</pre>
+
+<pre id="trim" class="viste">
+ string = <b>Trim&gt;\text\[;right|left]</b>
+Removes spaces from the left and right of a string.
+If the optional left or right parameter is added, removes spaces only
+to the left or just the right of the string.
+
+</pre>
+
+<pre id="ucase" class="viste">
+ string = <b>Ucase&gt;\text\</b>
+Converts to uppercase (opposite of <label onclick="vai('lcase')">Lcase</label>)
+
+</pre>
+
+<pre id="wait" class="viste">
+ <b>Wait&gt;\millisecs\</b>
+Stops script execution for the indicated number of thousandths of a second
+to the parameter.
+
+</pre>
+
+<pre id="window" class="viste">
+ [list = ]<b>Window&gt;set | get | hide | show ; \x\|\y\|\w\|\h\|\title\|min[max]</b>
+Gets or sets the properties of the interpreter window, or hide, or show the window.
+If the first parameter is hide, the window is hidden and the script continues
+in the background. <rosso>In this case to stop execution or to close Duno you will need
+to use your operating system's task manager!</rosso>
+If the first parameter is show, the window is shown again.
+If the first parameter is get, a list with the window properties is returned.
+If the first parameter is set, the window is set with the values indicated in
+list to the second parameter.
+The last element can be min (minimize the window) or max (show the window).
+If the values are invalid, they are ignored.
+To move other windows see:<label onclick="vai('xwingeometry')">XWinGeometry</label>
+<esempi> 
+window&gt;set;0|0||||
+#&gt;The window is moved to the top left corner
+window&gt;set;||500|300|hello|
+#&gt;change the size and title of the window
+window&gt;set;10||600|||min
+#&gt;change the position from the left, the width and then minimize the window.
+</esempi>
+Using the "hide" option to create a background service.
+<esempi>WINDOW&gt;hide;
+nextval&gt;
+  h = now&gt;h:m
+  ifeq&gt;\h\;12:30
+    break&gt;
+  endif&gt;
+  wait&gt;55000
+next&gt;
+WINDOW&gt;show;
+command&gt;bring pizza!!!;ok
+</esempi>
+</pre>
+
+<pre id="word" class="viste">
+ string = <b>Word&gt;\text\;\num\</b>
+From the text passed to the first parameter, it gets the word at the indicated position
+from the second parameter.
+Words are separated by spaces, tabs, pipes and carriage returns, including multiple ones.
+If the second parameter has a negative value, the position is calculated starting
+from the end.
+To get words with regexes see <label onclick="vai('prg')">Prg</label>.
+See also <label onclick="vai('keep')">Keep</label>.
+If the second parameter is not consistent, return <b>!error</b>.
+<esempi>
+show = word&gt;The black   cat \n.\ by Edgar Allan Poe;5
+#&gt;Edgar
+show = word&gt;The black   cat  \n.\ by Edgar Allan Poe;-1
+#&gt;Poe
+</esempi>
+</pre>
+
+<pre id="xwingeometry" class="viste">
+<b>XWinGeometry&gt;\winId\;\winLeft\;\winTop\;\winWidth\;\winHeight\</b>
+Function usable on systems based on the X graphic manager.
+Allows you to reposition and resize windows on the desktop.
+The windows are identified by a hexadecimal ID obtainable with the <rosso>xwininfo</rosso> command.
+The Id should be placed as the first parameter. The subsequent parameters set the new one
+position and size of the window.
+To change the interpreter window it is preferable to call <label onclick="vai('window')">Window</label>.
+<i>Currently not working in Wayland session.
+
+In the following example we have 'Luis' home open in a window that we want move.
+First, call xwininfo to get the id of the window with title "Luis".</i>
+<esempi>
+tit = mem&gt;Luis
+id  = prg&gt;xwininfo;-name|\tit\;<verde>// \tit\ should not be put in quotes</verde>
+id  = midstring&gt;\id\;id:;"\tit\";0;<verde>// quotes are needed here</verde>
+XWinGeometry&gt;[-- trim&gt;\id\--];400;320;500;400
+end&gt;</esempi>
+</pre>
+</body>
+</html>
