@@ -1,0 +1,38 @@
+***************************************************************************************
+COPY THE CONTENTS OF THIS FILE INTO THE DUNO BOX AND EXECUTE THE BLOCK.
+OR OPEN DUNO AND SELECT THIS FILE IN: File-Run file.
+OR directly run the file with extension.du
+***************************************************************************************
+
+colors =        >White|Black|Yellow|Green|Red|Purple
+index  = select >Choose a colour|\colors\;nocheck
+
+   The selection box allows you to obtain the index
+   but also the text selected in the private variable \selected\
+   as well as other values, which in this case are prohibited (nocheck).
+
+ifEq>\index\;-1
+#> if there is no selection, it comes back to line 0
+call>0
+endif>
+
+command>You have selected the \selected\;Modify;Add;Remove;Exit
+case>1;modify ;2;add ;3;rem ;4;end
+
+.modify>
+  tx = text>Enter new color;
+  colors =listEdit>\colors\;\index\;\tx\
+endFunct>
+
+.add>
+   tx = text>Enter new color;
+   colors =>\colors\|\tx\
+endFunct>
+
+.rem>
+  colors = listremove>\colors\;\index\;\index\  
+endFunct>
+
+select >New colors list |\colors\;check
+
+end>

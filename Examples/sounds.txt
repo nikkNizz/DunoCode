@@ -1,0 +1,51 @@
+***********************************************************************************
+COPY THE CONTENTS OF THIS FILE INTO THE DUNO BOX AND EXECUTE THE BLOCK.
+OR OPEN DUNO AND SELECT THIS FILE IN: File-Run file.
+OR directly run the file with extension.du
+***********************************************************************************
+ This script allows you to find and index all wav files in the /usr/share/sounds 
+ folder and choose among them by index.
+***********************************************************************************
+LINUX ONLY
+************
+soundsFolder =  >/usr/share/sounds
+ifexists>\soundsFolder\;not
+command>This script run on Linux only!\n.\(Folder /usr/share/sounds not found). ;Ok
+end>
+endif>
+#> subdir get all files in folder (option full get full path)
+files = subdir >\soundsFolder\;full
+
+list =  >\nothing\
+
+#> Scroll through all the files
+#> nextitem get first item of list then remove it from list
+
+f = nextitem >\files\
+ fi = fileinfo >\f\
+ ifstring >\fi\ ; ends; dir
+  #> Add files in subfolders
+  other = subdir >\f\;full
+  files =  >\files\|\other\
+ else>
+  #> parameter 'endsi' means 'endsWith case insensitive' 
+  ifstring >\f\ ;endsi ; .wav
+   list =  >\list\\f\|
+  endif>
+ endif>
+#>next come back to nextitem 
+next>
+
+#>remove last pipe
+list = listchop >\list\;1
+n = count >\list\;|
+nextval >~
+ myNum = numbox >Between 0 and \n\ to continue. Another number to exit.
+ ifincluded >\myNum\;0;\n\
+  playwav >[-- listAt>\list\;\myNum\--]
+ else>
+  command >I'm closing; Ok
+  end>
+ endif>
+next>
+end >
