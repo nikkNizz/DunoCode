@@ -14,7 +14,7 @@
    var indiceCrono = -1;
    var indiceRicerca=0;
    
-   var elencoDir=["#", "adddays" , "align" , "ascii" , "audiorec" , "battery" , "break" , "browser" , "calc" , "call" , "canc" , "case" , "chop" , "chr" , "clipboardev" , "close" , "clr" , "col" ,  "command" , "copy" , "count" , "datediff" , "decimal" , "diagon" , "dialog" , "diff" , "draw" , "drive" , "else" ,  "end" , "endfunct" , "endif" , "exit" , "filecopy" , "filedel"  , "fileevent" , "fileinfo" , "fileread" , "filerename" , "filewrite" , "folder" , "fromclipboard" , "funct" , "getlines" , "ifdate" , "ifeq"  , "ifequiv" , "ifexists" , "iffloat", "iffocus" , "ifincluded" , "ifint" , "ifleap" , "ifmaj" , "ifmin" , "ifstring" , "imgfromlist" , "indexof" , "insert" , "keep" , "lastindexof" , "launch" , "lbl" , "lcase" , "len" , "likeform" ,  "listafter" ,  "listat" , "listchop" , "listcompare" ,  "listedit" , "listextract" , "listfilter" , "listfrom" , "listfuse" , "listgroup" , "listindex" , "listinsert" , "listjoin" , "listmatch" ,  "listmax" , "listmid" , "listremitems" , "listremove" , "listsort" , "listsum"  , "listswap" , "listtotable"  , "math" , "mem" , "midstring" , "mod" , "network" , "next" , "nextchars" , "nextitem" , "nextrow" , "nextval" , "no" , "notes" , "notify" , "now" , "numbox" , "ofweek" , "oneof" , "osversion" , "pathup" , "pcname" , "picker" ,  "pixlist" , "playwav" , "pow" , "prg" , "print" , "progress" ,"qs", "random" , "remove" , "repeat" , "replace"  , "replaceline" , "replfirst" , "report" , "reverse" , "right" , "round" , "screenshot" , "screensize" , "sel_every" , "sel_join" , "sel_search" , "select" , "speak" , "sqrt" , "subdir" , "substring" , "text" , "thispath" , "tiletext"  , "time", "tohex" , "toprinter" , "trim" , "ucase" , "wait" , "window" , "word" ,  "xwingeometry"];
+   var elencoDir=["#", "adddays" , "align" , "ascii" , "audiorec" , "battery" , "break" , "browser" , "calc" , "call" , "canc" , "case" , "chop" , "chr" , "clipboardev" , "close" , "clr" , "col" ,  "command" , "copy" , "count" , "datediff" , "decimal" , "diagon" , "dialog" , "diff" , "draw" , "drive" , "else" ,  "end" , "endfunct" , "endif" , "exit" , "filecopy" , "filedel"  , "fileevent" , "fileinfo" , "fileread" , "filerename" , "filewrite" , "folder" , "fromclipboard" , "funct" , "getlines" , "ifdate" , "ifeq"  , "ifequiv" , "ifexists" , "iffloat", "iffocus" , "ifincluded" , "ifint" , "ifleap" , "ifmaj" , "ifmin" , "ifstring" , "imgfromlist" , "indexof" , "insert" , "keep" , "lastindexof" , "launch" , "lbl" , "lcase" , "len" , "likeform" ,  "listafter" ,  "listat" , "listchop" , "listcompare" ,  "listedit" , "listextract" , "listfilter" , "listfrom" , "listfuse" , "listgroup" , "listindex" , "listinsert" , "listjoin" , "listmatch" ,  "listmax" , "listmid" , "listremitems" , "listremove" , "listsort" , "listsum"  , "listswap" , "listtotable"  , "math" , "mem" , "midstring" , "mod" , "network" , "next" , "nextchars" , "nextitem" , "nextrow" , "nextval" , "no" , "notes" , "notify" , "now" , "numbox" , "ofweek" , "older","oneof" , "osversion" , "pathup" , "pcname" , "picker" ,  "pixlist" , "playwav" , "pow" , "prg" , "print" , "progress" ,"qs", "random" , "remove" , "repeat" , "replace"  , "replaceline" , "replfirst" , "report" , "reverse" , "right" , "round" , "screenshot" , "screensize" , "sel_every" , "sel_join" , "sel_search" , "select" , "speak" , "sqrt" , "subdir" , "substring" , "text" , "thispath" , "tiletext"  , "time", "tohex" , "toprinter" , "trim" , "ucase" , "wait" , "window" , "word" ,  "xwingeometry"];
    
    //-----------------------------------------------------------------------
    function carica(){
@@ -206,7 +206,7 @@ select{font-size:18px; color:blue;}}
 
 <body onload="carica()">
 
-<h2 id="intestazione">DunoCode 3.03 (LINUX)</h2>
+<h2 id="intestazione">DunoCode 3.04 (LINUX)</h2>
 
 <div id="sommario">
 
@@ -1931,13 +1931,32 @@ The first parameter must be chosen from one of the following functions:
 <b>pi </b>: returns pi.
 <b>rad</b> : Converts degrees \num\ to radians.
 <b>sin </b>: returns the sine of the angle \num\ in radians.
+<b>tan</b> : returns the tangent of the angle \num\ in radians.
 
 See also <label onclick="vai('diagon')">Diagon</label>.
 <esempi>
 rad = math &gt;rad; 60
 cos = math &gt;cos; \rad\
 notes &gt; The cosine of 60 is \cos\
-
+</esempi>
+<esempi>
+tan = math &gt;tan; 15
+--
+rad = math &gt;rad; 15
+tanG = math &gt;tan; \rad\
+print &gt;The tangent of 15 in radians is \tan\. In degrees is \tanG\
+end&gt;
+<b>The tangent of 15 in radians is -0.855993400909. In degrees is 0.267949192431</b>
+</esempi>
+<esempi>
+sin = &gt;50
+cos = &gt;80
+tan = calc &gt;\sin\ / \cos\
+a = MATH &gt;atan;\tan\
+a = MATH &gt;deg;\a\
+print &gt;For sides \sin\ and \cos\, the angle is \a\
+end&gt;
+<b>For sides 50 and 80, the angle is 32.0053832081</b>
 </esempi>
 </pre>
 
@@ -2148,6 +2167,14 @@ to the local system.
 Gets the day of the week from 1 to 7.
 Returns 0, if the date is incorrect.
 
+</pre>
+
+<pre id="older" class="viste">
+ int = <b>Older&gt;\file1\ ; \file2\</b>
+Returns 1 if file1 was modified before file2.
+Returns 2 otherwise.
+Returns 0 if the two files were created at the same time and
+returns !error if one of the two files does not exist.
 </pre>
 
 <pre id="oneof" class="viste">
