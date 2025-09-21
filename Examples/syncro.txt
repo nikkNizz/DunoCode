@@ -1,0 +1,55 @@
+****************************************************************************************
+COPY THE CONTENTS OF THIS FILE INTO THE DUNO BOX AND EXECUTE THE BLOCK.
+OR OPEN DUNO AND SELECT THIS FILE IN: File-Run file.
+OR directly run the file with extension.du
+*****************************************************************************************
+This script allows you to copy files from a source folder to a destination folder. 
+Only files not present in the destination folder and those that have been modified in 
+the source folder are copied.
+*****************************************************************************************
+
+#> ENTER REAL PATHS ! ----------
+
+origin = >/home/XXX/YYY/ZZZ
+destin = >/AAA/BBB/CCC/DDD
+
+#>-------------------------------
+ifexists >\origin\;not
+ end >Origin does not exists!
+endif>
+ifexists >\destin\;not
+ folder >create;\destin\
+endif>
+ifexists >\destin\;not 
+ end >Please create the destination folder
+endif>
+#>-------------------------------
+clr>
+#> list file in origin-----------
+
+list = subdir >\origin\;full
+
+file = nextitem >\list\;1
+ file2 = replfirst >\file\;\origin\;\destin\
+ fi = fileinfo >\file\;compact
+ ifstring >\fi\ ; ends ; dir
+  list =  >\list\|[-- subdir>\file\;full--]
+  ifexists >\file2\;not
+   folder >create;\file2\
+  endif>
+ else>
+  ifexists >\file2\;not
+   filecopy >\file\;\file2\
+   print >Synchronized : \file2\
+  else>
+   d = older >\file2\ ; \file\
+   ifeq >\d\;1
+    filedel >\file2\
+    filecopy >\file\;\file2\
+    print >Synchronized : \file2\
+   endif>
+  endif>
+ endif>
+next>
+end >Done.
+
