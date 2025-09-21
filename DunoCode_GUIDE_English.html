@@ -3,7 +3,7 @@
 
 <head>
 <title>DunoCode Manual </title>
-<link rel="icon" href="https://drive.google.com/uc?export=view&id=1yG1W11r0Rne9MlYlRVy3KV23VO-RmHHh" >
+<link rel="icon" href="https://dunocode.altervista.org/wp-content/uploads/2024/03/cropped-duno-192x192.png" >
 <meta charset="UTF-8" />
 
 
@@ -13,6 +13,7 @@
    var cronologia =["presentazione"];
    var indiceCrono = -1;
    var indiceRicerca=0;
+   var menuEvidenziato="";
    
    var elencoDir=["#", "adddays" , "align" , "ascii" , "audiorec" , "battery" , "break" , "browser" , "calc" , "call" , "canc" , "case" , "chop" , "chr" , "clipboardev" , "close" , "clr" , "col" ,  "command" , "copy" , "count" , "datediff" , "decimal" , "diagon" , "dialog" , "diff" , "draw" , "drive" , "else" ,  "end" , "endfunct" , "endif" , "exit" , "filecopy" , "filedel"  , "fileevent" , "fileinfo" , "fileread" , "filerename" , "filewrite" , "folder" , "fromclipboard" , "funct" , "getlines" , "ifdate" , "ifeq"  , "ifequiv" , "ifexists" , "iffloat", "iffocus" , "ifincluded" , "ifint" , "ifleap" , "ifmaj" , "ifmin" , "ifstring" , "imgfromlist" , "indexof" , "insert" , "keep" , "lastindexof" , "launch" , "lbl" , "lcase" , "len" , "likeform" ,  "listafter" ,  "listat" , "listchop" , "listcompare" ,  "listedit" , "listextract" , "listfilter" , "listfrom" , "listfuse" , "listgroup" , "listindex" , "listinsert" , "listjoin" , "listmatch" ,  "listmax" , "listmid" , "listremitems" , "listremove" , "listsort" , "listsum"  , "listswap" , "listtotable"  , "math" , "mem" , "midstring" , "mod" , "network" , "next" , "nextchars" , "nextitem" , "nextrow" , "nextval" , "no" , "notes" , "notify" , "now" , "numbox" , "ofweek" , "older","oneof" , "osversion" , "pathup" , "pcname" , "picker" ,  "pixlist" , "playwav" , "pow" , "prg" , "print" , "progress" ,"qs", "random" , "remove" , "repeat" , "replace"  , "replaceline" , "replfirst" , "report" , "reverse" , "right" , "round" , "screenshot" , "screensize" , "sel_every" , "sel_join" , "sel_search" , "select" , "speak" , "sqrt" , "subdir" , "substring" , "text" , "thispath" , "tiletext"  , "time", "tohex" , "toprinter" , "trim" , "ucase" , "wait" , "window" , "word" ,  "xwingeometry"];
    
@@ -21,7 +22,7 @@
       alert("File translated with GOOGLE !");
       var x = document.getElementById("elenco");
       var option = document.createElement("option");
-         option.text = "Directive list";
+         option.text = "Directives list";
          x.add(option); 
       for(it=0; it < elencoDir.length; it++){
          option = document.createElement("option");
@@ -41,41 +42,22 @@
    
    }
    
-   function vai(ID){
-     spostaCerchio(ID);
+   function vai(ID, evidz=0){
      document.getElementById(mostrato).style.display= "none";
      togliEvidenziazione();
      mostrato =ID;
      document.getElementById(ID).style.display= "inline";
+     if(menuEvidenziato != "" ){
+          document.getElementById(menuEvidenziato).style.backgroundColor= "#f5f6f7";
+       }
+     if(evidz == 1){       
+      document.getElementById(ID + "_").style.backgroundColor= "#96aac8";
+      menuEvidenziato = ID + "_";
+     }
      indiceCrono++;
-     cronologia.splice(indiceCrono,0,ID);  
-    
-       
+     cronologia.splice(indiceCrono,0,ID);
    }
  
-  function spostaCerchio(ID){
-    var posC=486;
-     if(ID == "caratteristiche"){posC=1;}
-    else if(ID == "basi"){posC = 29;}
-    else if(ID == "errori"){posC = 57;}
-    else if(ID == "controllo"){posC = 85;}
-    else if(ID == "output"){posC = 113;}
-    else if(ID == "variabilinterne"){posC = 141;}
-    else if(ID == "variabili"){posC = 169;}
-    else if(ID == "liste"){posC = 197;}
-    else if(ID == "condizioni"){posC = 225;}
-    else if(ID == "routine"){posC = 253;}
-    else if(ID == "annidamenti"){posC = 281;}
-    else if(ID == "cicli"){posC = 309;}  
-    else if(ID == "alias"){posC = 337;}
-    else if(ID == "ritroso"){posC = 365;}
-    else if(ID == "codiceesterno"){posC = 393;}
-    else if(ID == "jsbash"){posC = 421;}
-    else if(ID == "grafiche"){posC = 449;}
-    else if(ID == "contatti"){posC = 477;}   
-
-    document.getElementById("cerkio").style.top = posC + "px";
-}
    
     function backk_Click(){
       togliEvidenziazione();
@@ -85,7 +67,6 @@
       document.getElementById(mostrato).style.display= "none";
       mostrato =id;
       document.getElementById(id).style.display= "inline";
-      spostaCerchio(id);
 }
 
     function forww_Click(){
@@ -96,7 +77,6 @@
       document.getElementById(mostrato).style.display= "none";
       mostrato =id;
       document.getElementById(id).style.display= "inline";
-      spostaCerchio(id);
 }
 
            
@@ -154,17 +134,21 @@ function trovaFunc(){
    let p="";
    let altri="";
    for(i=0; i< elencoDir.length; i++){
+      if(elencoDir[i] == tx){p = tx;}
+    }
+   for(i=0; i< elencoDir.length; i++){
       if(elencoDir[i].indexOf(tx) > -1){
          if(p ==""){ p= elencoDir[i];}
-         else{altri +=elencoDir[i] + " "; }
-     
+         else{altri += elencoDir[i] + " "; }     
        }
-}
+    }
    p= p.replace("#", "ash");
    p= p.replace("_","");
    if(p != ""){ vai(p); document.getElementById("cerca").value = altri;};
 
 }
+
+function cancLine(){document.getElementById("cerca").value =""; }
 
 function togliEvidenziazione(){
      document.getElementById(mostrato).innerHTML= document.getElementById(mostrato).innerHTML.replace("<szn>", "");
@@ -185,20 +169,21 @@ function goSelez(){
 
 <style>
 
-body{background-color: #ddfdf0;}
-esempi{color: #AE268B;}
+body{background-color: #f5f6f7;}
+esempi{color: #c8288c;}
 rosso{color: red; font-style:italic;}
 verde{color:#007800;font-weight:500;}
 vi{color:orange; font-weight:bold; cursor:pointer;}
 szn{background-color:cyan;}
-label{cursor: pointer; color: blue;}
-.viste{position:absolute; top:80px; left:270px; border: solid 1px; background-color: #f0fddd; font-size: 16px;border-radius: 12px;display: none;padding: 3px;}
-#lineaBottoni{position:absolute; top:70px; left:270px;}
-#presentazione{position:absolute; top:85px; left:270px; height: 400px; width: 720px;border: solid 1px;border-radius: 10px; background-color: RGB(0, 0, 0); color: RGB(125, 219, 227); font-family: monospace; font-size:16px; font-weight: bold;padding:8px;}
-#intestazione{position:absolute; top:1px; left: 450px; color:red; font-style:italic;}
-#sommario{position:absolute; top:20px; left: 10px; width: 240px; height: 556px; border: solid 2px;border-radius:10px; border-color:#007400;font-size:17px;background-color:#f0fddd; }
-select{font-size:18px; color:blue;}}
-
+label{cursor: pointer; color: #324696; font-weight: 550;}
+.meunIt{position: absolute; height: 15px; border:1px; border-color: #f5f6f7; border-radius: 8px; padding: 2px;}
+.viste{position:absolute; top:95px; left:260px; background-color: #fdfdfd; font-size: 16px; display: none; padding: 3px;border: solid 0px;border-radius: 8px}
+#lineaBottoni{position:absolute; top:70px; left:90px;}
+#presentazione{position:absolute; top:95px; left:260px; height: 400px; width: 720px;border: solid 1px; background-color: RGB(0, 0, 0); color: RGB(125, 219, 227); font-family: monospace; font-size:16px; font-weight: bold;padding:8px;}
+#intestazione{position:absolute; top:1px; left: 440px; color:red; font-style:italic;}
+#sommario{position:absolute; top:95px; left: 8px; width: 240px; height: 556px; font-size:16px; font-family: courier; background-color:#f5f6f7;margin:3px; }
+select{font-size:18px; color:blue;}
+button{ background-color:#f6f7f8; border-radius: 8px;}
 </style>
 
 
@@ -209,38 +194,39 @@ select{font-size:18px; color:blue;}}
 <h2 id="intestazione">DunoCode 3.04 (LINUX)</h2>
 
 <div id="sommario">
+<br>
+<label id = "caratteristiche_" class ="meunIt" onclick="vai('caratteristiche', 1)">Characteristics</label><br>
+<label id = "basi_"  class ="meunIt" onclick="vai('basi',1)">Basics of language</label><br>
+<label id = "errori_" class = "meunIt"  onclick="vai('errori',1)"> Errors</label><br>
+<label id = "controllo_" class = "meunIt"  onclick="vai('controllo',1)"> Control character</label><br>
+<label id = "output_" class = "meunIt"  onclick="vai('output',1)"> Output and debug</label><br>
+<label id = "variabilinterne_"  class = "meunIt" onclick="vai('variabilinterne',1)"> Internal variabiles</label><br>
+<label id = "variabili_" class = "meunIt"  onclick="vai('variabili',1)"> Variabiles</label><br>
+<label id = "liste_" class = "meunIt"  onclick="vai('liste', 1)"> Lists</label><br>
+<label id = "condizioni_"  class = "meunIt" onclick="vai('condizioni',1)"> Conditions</label><br>
+<label id = "routine_"  class = "meunIt" onclick="vai('routine',1)"> Routine</label><br>
+<label id = "annidamenti_" class = "meunIt"  onclick="vai('annidamenti',1)"> Nesting</label><br>
+<label id = "cicli_"  class = "meunIt" onclick="vai('cicli',1)"> Loops</label><br>
+<label id = "alias_" class = "meunIt"  onclick="vai('alias',1)"> Alias</label><br>
+<label id = "ritroso_" class = "meunIt"  onclick="vai('ritroso',1)"> Back script</label><br>
+<label id = "codiceesterno_" class = "meunIt"  onclick="vai('codiceesterno',1)"> External code</label><br>
+<label id = "jsbash_"  class = "meunIt" onclick="vai('jsbash',1)"> Javascript, Bash</label><br>
+<label id = "grafiche_" class = "meunIt"  onclick="vai('grafiche',1)"> Graphics</label><br>
+<label id = "contatti_" class = "meunIt"  onclick="vai('contatti',1)"> How to...</label><br><br>
+<select id="elenco" size="0" onchange="cambia()" >Directives list</select>
 
-<label style="position:absolute; top:1px;" onclick="vai('caratteristiche')">Characteristics</label><br><br>
-<label style="position:absolute; top:29px;" onclick="vai('basi')">Basics of language</label><br><br>
-<label style="position:absolute; top:57px;" onclick="vai('errori')">Errors</label><br>
-<label style="position:absolute; top:85px;" onclick="vai('controllo')">Control character</label><br>
-<label style="position:absolute; top:113px;" onclick="vai('output')">Output and dubug</label><br>
-<label style="position:absolute; top:141px;" onclick="vai('variabilinterne')">Internal variabiles</label><br>
-<label style="position:absolute; top:169px;" onclick="vai('variabili')">Variabiles</label><br>
-<label style="position:absolute; top:197px;" onclick="vai('liste')">Lists</label><br>
-<label style="position:absolute; top:225px;" onclick="vai('condizioni')">Conditions</label><br>
-<label style="position:absolute; top:253px;" onclick="vai('routine')">Routine</label><br>
-<label style="position:absolute; top:281px;" onclick="vai('annidamenti')">Nestings</label><br>
-<label style="position:absolute; top:309px;" onclick="vai('cicli')">Loops</label><br>
-<label style="position:absolute; top:337px;" onclick="vai('alias')">Alias</label><br>
-<label style="position:absolute; top:365px;" onclick="vai('ritroso')">Back script</label><br>
-<label style="position:absolute; top:393px;" onclick="vai('codiceesterno')">External code</label><br>
-<label style="position:absolute; top:421px;" onclick="vai('jsbash')">Javascript, Bash</label><br>
-<label style="position:absolute; top:449px;" onclick="vai('grafiche')">Graphics</label><br>
-<label style="position:absolute; top:477px;" onclick="vai('contatti')">How to...</label><br><br>
-&nbsp;&nbsp;<select style="position:absolute; top:515px;" id="elenco" size="0" onchange="cambia()" >Elenco Direttive</select>
-<div id="cerkio" style="position:absolute; top:458px; left:220px; width:16px; height:16px; background-color:#ffff00; border:solid 1px; border-radius:10px;" ></div>
 </div>
 
 <div id= "lineaBottoni">
-<button onclick="backk_Click()" >&lt;</button>
-<button onclick="forww_Click()" >&gt;</button>
-
-<button onclick="prossimo(1)">Next directive</button>
-<button onclick="prossimo(-1)">Previous directive</button>
-<input type="text" id="cerca" placeholder="Find word" ondblClick="goSelez()" >
-<button onClick="trova(0)">Find next</button>
-<button onClick="trovaFunc()">Find directive</button>
+<button style ="border-radius: 0px;" onclick="backk_Click()" >&lt;</button>
+<button style ="border-radius: 0px;" onclick="forww_Click()" >&gt;</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button onclick="prossimo(1)">Next function</button>
+<button onclick="prossimo(-1)">Previous function</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="text" style="height:18px; background-color:#f6f7f8;" id="cerca" placeholder="Cerca" ondblClick="goSelez()" >
+<button onClick="trova(0)">🔍Word</button>
+<button onClick="trovaFunc()">🔍Function</button>
+<button onClick="cancLine()"><b>X</b></button>
 </div>
 
 <pre id="presentazione" >
@@ -249,7 +235,7 @@ tx =Insert &gt;\tx\ ; 13 ; fantastic
 Print  &gt;\tx\
 End    &gt;
 
-DunoCode : a fantastic scripting language...<button onclick="vai('caratteristiche')">...</button>
+DunoCode : a fantastic scripting language...<button style="border-radius:0px" onclick="vai('caratteristiche')">...</button>
 </pre>
 
 <pre id="caratteristiche" class="viste">
@@ -839,11 +825,16 @@ Javascript "window.print();".
 Performs calculation on the passed expression.
 Accepts round, square and curly brackets, as long as the parentheses 
 are at the top level contain those of low level.
+Accepts operations + - * / %.
 <esempi>
 M = numbox&gt;Enter sum
-P = numbox&gt;Ins. percentage to be separated
+P = numbox&gt;Percentage to be separated
 R = calc&gt;\M\*100/(100+\P\)
 notes&gt;Amount separated \R\
+</esempi>
+---
+<esempi>
+show = calc&gt;1500*20% + 50
 </esempi>
 </pre>
 
