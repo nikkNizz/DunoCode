@@ -10,8 +10,8 @@ the source folder are copied.
 
 #> ENTER REAL PATHS ! ----------
 
-origin = >/home/XXX/YYY/ZZZ
-destin = >/AAA/BBB/CCC/DDD
+origin = >C:\aaa\bbb\ccc
+destin = >D:\ddd\eee\fff
 
 #>-------------------------------
 ifexists >\origin\;not
